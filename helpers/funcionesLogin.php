@@ -116,67 +116,80 @@ class FuncionesLogin
          exit;
     }
 
-    public static function register($dni, $nombre, $apellidos, $contrasena, $fechaNacimiento, $telefono, $correo, $domicilio, $tutor, $listaDestinatarios)
+    public static function register($dni, $nombre, $apellidos, $contrasena, $fechaNacimiento, $telefono, $correo, $domicilio, $tutorDni, $listaDestinatarios, $tutorNombre, $tutorApellidos, $tutorTelefono, $tutorDomicilio)
+{
+    // Sustituye 'tu_tabla_de_usuarios' con el nombre real de tu tabla de usuarios
+    $rol = 'alumno';
+
+    self::iniciarConexion();
+
+    if (isset($_POST['enviar'])) 
     {
-        // Sustituye 'tu_tabla_de_usuarios' con el nombre real de tu tabla de usuarios
-        $rol = 'alumno';
+        // Comprobar si el DNI ya existe en la base de datos
+        $queryVerificacion = "SELECT COUNT(*) as count FROM candidatos WHERE dni = :dni";
+        $stmtVerificacion = self::$conexion->prepare($queryVerificacion);
+        $stmtVerificacion->bindParam(':dni', $dni);
+        $stmtVerificacion->execute();
 
-        self::iniciarConexion();
+        $row = $stmtVerificacion->fetch(PDO::FETCH_ASSOC);
 
-        if (isset($_POST['enviar'])) 
+        if ($row['count'] > 0) 
         {
-            // Comprobar si el DNI ya existe en la base de datos
-            $queryVerificacion = "SELECT COUNT(*) as count FROM candidatos WHERE dni = :dni";
-            $stmtVerificacion = self::$conexion->prepare($queryVerificacion);
-            $stmtVerificacion->bindParam(':dni', $dni);
-            $stmtVerificacion->execute();
+            echo "DNI ya existente. Por favor, elige otro.";
+        } 
+        else 
+        {
+            // El DNI no existe, proceder con la inserción
 
-            $row = $stmtVerificacion->fetch(PDO::FETCH_ASSOC);
+            // Obtener el valor del curso seleccionado
+            $curso = isset($_POST['curso']) ? $_POST['curso'] : null;
 
-            if ($row['count'] > 0) 
+            // Inicializar a null
+            $idTutor = null;
+
+            if (!empty($tutorDni) && !empty($tutorNombre) && !empty($tutorApellidos) && !empty($tutorTelefono) && !empty($tutorDomicilio)) 
             {
-                echo "DNI ya existente. Por favor, elige otro.";
-            } else {
-                // El DNI no existe, proceder con la inserción
+                // Insertar el tutor en la tabla "tutor"
+                $queryTutor = "INSERT INTO tutor (dni, nombre, apellidos, telefono, domicilio) 
+                            VALUES (:tutorDni, :tutorNombre, :tutorApellidos, :tutorTelefono, :tutorDomicilio)";
+                $stmtTutor = self::$conexion->prepare($queryTutor);
+                $stmtTutor->bindParam(':tutorDni', $tutorDni);
+                $stmtTutor->bindParam(':tutorNombre', $tutorNombre);
+                $stmtTutor->bindParam(':tutorApellidos', $tutorApellidos);
+                $stmtTutor->bindParam(':tutorTelefono', $tutorTelefono);
+                $stmtTutor->bindParam(':tutorDomicilio', $tutorDomicilio);
+                $stmtTutor->execute();
 
-                // Obtener el valor del curso seleccionado
-                $curso = isset($_POST['curso']) ? $_POST['curso'] : null;
-
-                
-                if (empty($tutor)) {
-                    $tutor = null;
-                }
-    
-
-                // Insertar el registro en la tabla candidatos
-                $query = "INSERT INTO candidatos (dni, nombre, apellidos, contrasena, fecha_nacimiento, telefono, correo, domicilio, curso, id_tutor, rol) 
-                          VALUES (:dni, :nombre, :apellidos, :contrasena, :fechaNacimiento, :telefono, :correo, :domicilio, :curso, :tutor, :rol)";
-                
-                $stmt = self::$conexion->prepare($query);
-                $stmt->bindParam(':dni', $dni);
-                $stmt->bindParam(':nombre', $nombre);
-                $stmt->bindParam(':apellidos', $apellidos);
-                $stmt->bindParam(':contrasena', $contrasena);
-                $stmt->bindParam(':fechaNacimiento', $fechaNacimiento);
-                $stmt->bindParam(':telefono', $telefono);
-                $stmt->bindParam(':correo', $correo);
-                $stmt->bindParam(':domicilio', $domicilio);
-                $stmt->bindParam(':curso', $curso);
-                $stmt->bindParam(':tutor', $tutor);
-                $stmt->bindParam(':rol', $rol);
-
-
-                $stmt->execute();
-
-                // Redirigir después de la inserción
-                // header('Location: ?menu=login');
-                // exit(); // Asegurarse de que el script se detenga después de redirigir
+                // Obtener el ID del tutor recién insertado
+                $idTutor = self::$conexion->lastInsertId();
             }
+
+            // Insertar el registro en la tabla "candidatos"
+            $query = "INSERT INTO candidatos (dni, nombre, apellidos, contrasena, fecha_nacimiento, telefono, correo, domicilio, curso, id_tutor, rol) 
+                    VALUES (:dni, :nombre, :apellidos, :contrasena, :fechaNacimiento, :telefono, :correo, :domicilio, :curso, :idTutor, :rol)";
+            
+            $stmt = self::$conexion->prepare($query);
+            $stmt->bindParam(':dni', $dni);
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':apellidos', $apellidos);
+            $stmt->bindParam(':contrasena', $contrasena);
+            $stmt->bindParam(':fechaNacimiento', $fechaNacimiento);
+            $stmt->bindParam(':telefono', $telefono);
+            $stmt->bindParam(':correo', $correo);
+            $stmt->bindParam(':domicilio', $domicilio);
+            $stmt->bindParam(':curso', $curso);
+            $stmt->bindParam(':idTutor', $idTutor);
+            $stmt->bindParam(':rol', $rol);
+
+            $stmt->execute();
+
+            // Redirigir después de la inserción
+            // header('Location: ?menu=login');
+            // exit(); // Asegurarse de que el script se detenga después de redirigir
         }
     }
 }
-?>
-    
+
 
     public function obtenerRolPorNombre($nombreUsuario)
     {

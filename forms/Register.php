@@ -18,10 +18,14 @@ class Register
             $telefono = $_POST['telefono'];
             $correo = $_POST['correo'];
             $domicilio = $_POST['domicilio'];
-            $tutor = $_POST['tutor'];
+            $tutorDni = $_POST['tutorDni'];
+            $tutorNombre = $_POST['tutorNombre'];
+            $tutorApellidos = $_POST['tutorApellidos'];
+            $tutorTelefono = $_POST['tutorTelefono'];
+            $tutorDomicilio = $_POST['tutorDomicilio'];
 
             // Llamada a la función register con la lista de destinatarios
-            FuncionesLogin::register($dni, $nombre, $apellidos, $contrasena, $fechaNacimiento, $telefono, $correo, $domicilio, $tutor, $listaDestinatarios);
+            FuncionesLogin::register($dni, $nombre, $apellidos, $contrasena, $fechaNacimiento, $telefono, $correo, $domicilio, $tutorDni, $listaDestinatarios,$tutorNombre,$tutorApellidos,$tutorTelefono,$tutorDomicilio);
         }
     }
 }
