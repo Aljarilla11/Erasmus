@@ -7,14 +7,17 @@ class ConvocatoriaBaremo
     public $id_baremo;
     public $id_convocatoria;
     public $valor_minimo;
+    public $aportalumno;
 
-    public function __construct($id, $requisito, $nota_max, $id_baremo, $id_convocatoria, $valor_minimo) {
+    public function __construct($id, $requisito, $nota_max, $id_baremo, $id_convocatoria, $valor_minimo,$aportalumno) {
         $this->id = $id;
         $this->requisito = $requisito;
         $this->nota_max = $nota_max;
         $this->id_baremo = $id_baremo;
         $this->id_convocatoria = $id_convocatoria;
         $this->valor_minimo = $valor_minimo;
+        $this->aportalumno = $aportalumno;
+
     }
 
     // Métodos getter
@@ -66,6 +69,18 @@ class ConvocatoriaBaremo
     public function setValorMinimo($valor_minimo) {
         $this->valor_minimo = $valor_minimo;
     }
+
+    public function getAportalumno() 
+    {
+        return $this->aportalumno;
+    }
+
+    public function setAportalumno($aportalumno) 
+    {
+        $this->aportalumno = $aportalumno;
+    }
+
+    
 }
 
 ?>

@@ -12,8 +12,9 @@ class Convocatoria
     public $curso;
     public $tutor;
     public $rol;
+    public $contrasena;
 
-    public function __construct($id, $dni, $nombre, $apellidos, $fecha_nacimiento, $telefono, $correo, $domicilio, $curso, $tutor, $rol) {
+    public function __construct($id, $dni, $nombre, $apellidos, $fecha_nacimiento, $telefono, $correo, $domicilio, $curso, $tutor, $rol, $contrasena) {
         $this->id = $id;
         $this->dni = $dni;
         $this->nombre = $nombre;
@@ -25,6 +26,7 @@ class Convocatoria
         $this->curso = $curso;
         $this->tutor = $tutor;
         $this->rol = $rol;
+        $this->contrasena = $contrasena;
     }
 
     // Métodos getter
@@ -115,6 +117,16 @@ class Convocatoria
 
     public function setRol($rol) {
         $this->rol = $rol;
+    }
+
+    public function getContrasena() 
+    {
+        return $this->contrasena;
+    }
+
+    public function setContrasena($contrasena) {
+
+        $this->contrasena = $contrasena;
     }
 }
 ?>

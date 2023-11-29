@@ -8,7 +8,7 @@ class RepositoryTutor
 
     public function __construct($conexion)
     {
-        $this->conexion = $conexion;
+        $this->conexion = Db::conectar();
     }
 
     public function obtenerTutores()
