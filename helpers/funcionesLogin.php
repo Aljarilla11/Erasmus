@@ -12,33 +12,28 @@ class FuncionesLogin
         self::$conexion = Db::conectar();
     }
 
-    public static function login($nombre, $password)
+    public static function login($dni, $password)
     {
         //Sesion::iniciaSesion();
 
         if (isset($_POST['enviar'])) 
         {
                       
-            if(self::existeUsuario($nombre, $password)) 
+            if(self::existeUsuario($dni, $password)) 
             {
-                $role = self::obtenerRoleUsuario($nombre, $password);
+                $role = self::obtenerRoleUsuario($dni, $password);
 
                 if ($role === 'admin') 
                 {
-                    Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $nombre);
-                    header('Location: ?menu=admin');
+                    Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $dni);
+                    header('Location: ?menu=crearconvocatoria');
                     exit;
                 } 
                 elseif ($role === 'alumno') 
                 {
-                    Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $nombre);
+                    Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $dni);
                     header('Location: ?menu=alumno');
-                    exit;
-                } 
-                elseif ($role === 'profesor') 
-                {
-                    Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $nombre);
-                    header('Location: ?menu=profesor');
+                    var_dump("alumno");
                     exit;
                 } 
                 else 
@@ -53,15 +48,15 @@ class FuncionesLogin
         }   
     }
 
-    public static function existeUsuario($nombre, $password)
+    public static function existeUsuario($dni, $password)
     {
         //Sesion::iniciaSesion();
         self::iniciarConexion();
 
         // Utilizar sentencias preparadas para prevenir ataques de inyección de SQL
-        $sql = "SELECT * FROM usuario WHERE nombre = :nombre AND password = :password AND role <> ''";
+        $sql = "SELECT * FROM candidatos WHERE dni = :dni AND contrasena = :password";
         $stmt = self::$conexion->prepare($sql);
-        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':dni', $dni);
         $stmt->bindParam(':password', $password);
         $stmt->execute();
 
@@ -75,21 +70,21 @@ class FuncionesLogin
         }
     }
 
-    public static function obtenerRoleUsuario($nombre, $password)
+    public static function obtenerRoleUsuario($dni, $password)
     {
         //Sesion::iniciaSesion();
         self::iniciarConexion();
 
-        $sql = "SELECT role FROM usuario WHERE nombre = :nombre AND password = :password";
+        $sql = "SELECT rol FROM candidatos WHERE dni = :dni AND contrasena = :password";
         $stmt = self::$conexion->prepare($sql);
-        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':dni', $dni);
         $stmt->bindParam(':password', $password);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) 
         {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $row['role'];
+            return $row['rol'];
         } 
         else 
         {
@@ -184,8 +179,8 @@ class FuncionesLogin
             $stmt->execute();
 
             // Redirigir después de la inserción
-            // header('Location: ?menu=login');
-            // exit(); // Asegurarse de que el script se detenga después de redirigir
+             header('Location: ?menu=login');
+            exit(); // Asegurarse de que el script se detenga después de redirigir
         }
     }
 }
