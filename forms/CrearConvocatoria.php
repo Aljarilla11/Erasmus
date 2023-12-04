@@ -1,10 +1,15 @@
 <?php
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
     isset($_POST['movilidad'], $_POST['tipo'], $_POST['fechaInicio'], $_POST['fechaFin'], $_POST['fechaInicioProvisional'],
     $_POST['fechaFinProvisional'], $_POST['fechaInicioDefinitiva'], $_POST['idProyecto'])) 
 {
     $conexion = Db::conectar();
+
+    // Obtener el id_proyecto seleccionado
     $idProyecto = $_POST['idProyecto'];
+
+    // Insertar datos de la convocatoria
     $movilidad = $_POST['movilidad'];
     $tipo = $_POST['tipo'];
     $fechaInicio = $_POST['fechaInicio'];
@@ -12,9 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
     $fechaInicioProvisional = $_POST['fechaInicioProvisional'];
     $fechaFinProvisional = $_POST['fechaFinProvisional'];
     $fechaInicioDefinitiva = $_POST['fechaInicioDefinitiva'];
+
     $sqlConvocatoria = "INSERT INTO convocatorias (movilidades, tipo, fecha_inicio, fecha_fin, fecha_inicio_pruebas, fecha_fin_pruebas, fecha_inicio_definitiva, id_proyecto)
                         VALUES (:movilidad, :tipo, :fechaInicio, :fechaFin, :fechaInicioProvisional, :fechaFinProvisional, :fechaInicioDefinitiva, :idProyecto)";
+
     $statementConvocatoria = $conexion->prepare($sqlConvocatoria);
+
     $statementConvocatoria->bindParam(':movilidad', $movilidad);
     $statementConvocatoria->bindParam(':tipo', $tipo);
     $statementConvocatoria->bindParam(':fechaInicio', $fechaInicio);
@@ -23,26 +31,114 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
     $statementConvocatoria->bindParam(':fechaFinProvisional', $fechaFinProvisional);
     $statementConvocatoria->bindParam(':fechaInicioDefinitiva', $fechaInicioDefinitiva);
     $statementConvocatoria->bindParam(':idProyecto', $idProyecto);
+
     if ($statementConvocatoria->execute()) 
     {
+        // Obtener el último id insertado
         $idConvocatoria = $conexion->lastInsertId();
+
+        // Manejar los elementos del baremo seleccionados
         if (isset($_POST['elementosBaremo'])) {
             $elementosSeleccionados = $_POST['elementosBaremo'];
+
+            // Iterar sobre los elementos seleccionados y realizar la acción deseada
             foreach ($elementosSeleccionados as $elementoId) {
                 $sqlInsert = "INSERT INTO destinatarios_convocatoria (id_convocatoria, id_destinatario) VALUES (:idConvocatoria, :idDestinatario)";
                 $statementInsert = $conexion->prepare($sqlInsert);
                 $statementInsert->bindParam(':idConvocatoria', $idConvocatoria);
                 $statementInsert->bindParam(':idDestinatario', $elementoId);
                 $statementInsert->execute();
+
+                // Verificar si el elemento es de idioma (id = 1)
+                if ($elementoId == 1) {
+                    // Insertar datos en la tabla convocatoria_baremo_idioma
+                    $sqlBaremoIdioma = "INSERT INTO convocatoria_baremo_idioma (valor, id_niveles_idioma, id_convocatoria_baremo)
+                                        VALUES (:valor, :idNivelesIdioma, :idConvocatoriaBaremo)";
+                    $statementBaremoIdioma = $conexion->prepare($sqlBaremoIdioma);
+
+                    // Obtener los datos de niveles de idioma desde el formulario
+                    $nivelesIdioma = $_POST['nivelesIdioma_' . $elementoId];
+                    foreach ($nivelesIdioma as $nivel => $valor) {
+                        $idNivelesIdioma = obtenerIdNivelesIdioma($nivel); // Implementa esta función para obtener el ID del nivel de idioma
+
+                        // Insertar datos en convocatoria_baremo_idioma
+                        $statementBaremoIdioma->bindParam(':valor', $valor);
+                        $statementBaremoIdioma->bindParam(':idNivelesIdioma', $idNivelesIdioma);
+                        $statementBaremoIdioma->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo);
+                        $statementBaremoIdioma->execute();
+                    }
+
+                    // Insertar datos en la tabla convocatoria_baremo para elementos que no son de idioma
+                    $sqlBaremo = "INSERT INTO convocatoria_baremo (requisito, nota_max, id_baremo, id_convocatoria, valor_minimo, aportalumno)
+                                  VALUES (:requisito, :notaMax, :idBaremo, :idConvocatoria, :valorMinimo, :aporteAlumno)";
+                    $statementBaremo = $conexion->prepare($sqlBaremo);
+
+                    // Obtener los datos de baremo desde el formulario (ajusta los nombres según tus campos)
+                    $requisito = $_POST['requisito_' . $elementoId];
+                    $notaMax = $_POST['notaMaxima_' . $elementoId];
+                    $valorMinimo = $_POST['valorMinimo_' . $elementoId];
+                    $aporteAlumno = isset($_POST['aporteAlumno_' . $elementoId]) ? 1 : 0;
+
+                    // Insertar datos en convocatoria_baremo
+                    $statementBaremo->bindParam(':requisito', $requisito);
+                    $statementBaremo->bindParam(':notaMax', $notaMax);
+                    $statementBaremo->bindParam(':idBaremo', $elementoId);
+                    $statementBaremo->bindParam(':idConvocatoria', $idConvocatoria);
+                    $statementBaremo->bindParam(':valorMinimo', $valorMinimo);
+                    $statementBaremo->bindParam(':aporteAlumno', $aporteAlumno);
+                    $statementBaremo->execute();
+                } else {
+                    // Insertar datos en la tabla convocatoria_baremo para elementos que no son de idioma
+                    $sqlBaremo = "INSERT INTO convocatoria_baremo (requisito, nota_max, id_baremo, id_convocatoria, valor_minimo, aportalumno)
+                                  VALUES (:requisito, :notaMax, :idBaremo, :idConvocatoria, :valorMinimo, :aporteAlumno)";
+                    $statementBaremo = $conexion->prepare($sqlBaremo);
+
+                    // Obtener los datos de baremo desde el formulario (ajusta los nombres según tus campos)
+                    $requisito = $_POST['requisito_' . $elementoId];
+                    $notaMax = $_POST['notaMaxima_' . $elementoId];
+                    $valorMinimo = $_POST['valorMinimo_' . $elementoId];
+                    $aporteAlumno = isset($_POST['aporteAlumno_' . $elementoId]) ? 1 : 0;
+
+                    // Insertar datos en convocatoria_baremo
+                    $statementBaremo->bindParam(':requisito', $requisito);
+                    $statementBaremo->bindParam(':notaMax', $notaMax);
+                    $statementBaremo->bindParam(':idBaremo', $elementoId);
+                    $statementBaremo->bindParam(':idConvocatoria', $idConvocatoria);
+                    $statementBaremo->bindParam(':valorMinimo', $valorMinimo);
+                    $statementBaremo->bindParam(':aporteAlumno', $aporteAlumno);
+                    $statementBaremo->execute();
             }
         }
+    }
         echo "Convocatoria creada exitosamente";
     } 
     else 
     {
         echo "Error al crear la convocatoria: " . $statementConvocatoria->errorInfo()[2];
     }
+
+    // Cerrar la conexión
     $conexion = null;
+}
+
+function obtenerIdNivelesIdioma($nivel) 
+{
+    $conexion = Db::conectar(); // Asegúrate de tener una función Db::conectar() que devuelva una conexión PDO válida
+
+    // Consulta para obtener el ID del nivel de idioma según el nombre
+    $sql = "SELECT id FROM niveles_idioma WHERE nombre = :nivel";
+    $statement = $conexion->prepare($sql);
+    $statement->bindParam(':nivel', $nivel);
+    $statement->execute();
+
+    // Obtener el resultado de la consulta
+    $resultado = $statement->fetch(PDO::FETCH_ASSOC);
+
+    // Cerrar la conexión
+    $conexion = null;
+
+    // Devolver el ID del nivel de idioma (o false si no se encuentra)
+    return $resultado ? $resultado['id'] : false;
 }
 
 $conexion = Db::conectar();
