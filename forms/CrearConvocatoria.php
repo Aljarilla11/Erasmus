@@ -37,9 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
         // Obtener el último id insertado
         $idConvocatoria = $conexion->lastInsertId();
 
-        // Manejar los elementos del baremo seleccionados
-        if (isset($_POST['elementosBaremo'])) {
-            $elementosSeleccionados = $_POST['elementosBaremo'];
+        if (isset($_POST['clases'])) {
+            $elementosSeleccionados = $_POST['clases'];
 
             // Iterar sobre los elementos seleccionados y realizar la acción deseada
             foreach ($elementosSeleccionados as $elementoId) {
@@ -48,67 +47,78 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
                 $statementInsert->bindParam(':idConvocatoria', $idConvocatoria);
                 $statementInsert->bindParam(':idDestinatario', $elementoId);
                 $statementInsert->execute();
+            }
+        }
 
+        // Manejar los elementos del baremo seleccionados
+        if (isset($_POST['elementosBaremo'])) {
+            $elementosSeleccionados = $_POST['elementosBaremo'];
+
+            foreach ($elementosSeleccionados as $elementoId) {
                 // Verificar si el elemento es de idioma (id = 1)
                 if ($elementoId == 1) {
-                    // Insertar datos en la tabla convocatoria_baremo_idioma
-                    $sqlBaremoIdioma = "INSERT INTO convocatoria_baremo_idioma (valor, id_niveles_idioma, id_convocatoria_baremo)
-                                        VALUES (:valor, :idNivelesIdioma, :idConvocatoriaBaremo)";
-                    $statementBaremoIdioma = $conexion->prepare($sqlBaremoIdioma);
-
-                    // Obtener los datos de niveles de idioma desde el formulario
-                    $nivelesIdioma = $_POST['nivelesIdioma_' . $elementoId];
-                    foreach ($nivelesIdioma as $nivel => $valor) {
-                        $idNivelesIdioma = obtenerIdNivelesIdioma($nivel); // Implementa esta función para obtener el ID del nivel de idioma
-
-                        // Insertar datos en convocatoria_baremo_idioma
-                        $statementBaremoIdioma->bindParam(':valor', $valor);
-                        $statementBaremoIdioma->bindParam(':idNivelesIdioma', $idNivelesIdioma);
-                        $statementBaremoIdioma->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo);
-                        $statementBaremoIdioma->execute();
-                    }
-
                     // Insertar datos en la tabla convocatoria_baremo para elementos que no son de idioma
                     $sqlBaremo = "INSERT INTO convocatoria_baremo (requisito, nota_max, id_baremo, id_convocatoria, valor_minimo, aportalumno)
                                   VALUES (:requisito, :notaMax, :idBaremo, :idConvocatoria, :valorMinimo, :aporteAlumno)";
                     $statementBaremo = $conexion->prepare($sqlBaremo);
-
-                    // Obtener los datos de baremo desde el formulario (ajusta los nombres según tus campos)
-                    $requisito = $_POST['requisito_' . $elementoId];
-                    $notaMax = $_POST['notaMaxima_' . $elementoId];
-                    $valorMinimo = $_POST['valorMinimo_' . $elementoId];
-                    $aporteAlumno = isset($_POST['aporteAlumno_' . $elementoId]) ? 1 : 0;
-
+            
+                    // Obtener los datos de baremo desde el formulario
+                    $requisito = isset($_POST['requisitos'][$elementoId]) ? 1 : 0;
+                    $notaMax = $_POST['notasMaximas'][$elementoId];
+                    $valorMinimo = $_POST['valoresMinimos'][$elementoId];
+                    $aporteAlumno = isset($_POST['aportesAlumno'][$elementoId]) ? 1 : 0;
+            
                     // Insertar datos en convocatoria_baremo
-                    $statementBaremo->bindParam(':requisito', $requisito);
+                    $statementBaremo->bindParam(':requisito', $requisito, PDO::PARAM_BOOL);
                     $statementBaremo->bindParam(':notaMax', $notaMax);
                     $statementBaremo->bindParam(':idBaremo', $elementoId);
                     $statementBaremo->bindParam(':idConvocatoria', $idConvocatoria);
                     $statementBaremo->bindParam(':valorMinimo', $valorMinimo);
-                    $statementBaremo->bindParam(':aporteAlumno', $aporteAlumno);
+                    $statementBaremo->bindParam(':aporteAlumno', $aporteAlumno, PDO::PARAM_BOOL);
                     $statementBaremo->execute();
+            
+                    // Insertar datos en la tabla convocatoria_baremo_idioma
+                    $sqlBaremoIdioma = "INSERT INTO convocatoria_baremo_idioma (valor, id_niveles_idioma, id_convocatoria_baremo)
+                                        VALUES (:valor, :idNivelesIdioma, :idConvocatoriaBaremo)";
+                    $statementBaremoIdioma = $conexion->prepare($sqlBaremoIdioma);
+            
+                    $nivelesIdioma = isset($_POST['nivelesIdioma'][$elementoId]) ? $_POST['nivelesIdioma'][$elementoId] : [];
+
+// Verificar si $nivelesIdioma es un array antes de iterar
+if (is_array($nivelesIdioma)) {
+    foreach ($nivelesIdioma as $nivel => $valor) {
+        echo $nivel;
+        $idNivelesIdioma = obtenerIdNivelesIdioma($nivel);
+         
+        // Insertar datos en convocatoria_baremo_idioma
+        $statementBaremoIdioma->bindParam(':valor', $valor);
+        $statementBaremoIdioma->bindParam(':idNivelesIdioma', $idNivelesIdioma);
+        $statementBaremoIdioma->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo);
+        $statementBaremoIdioma->execute();
+    }
+}
                 } else {
                     // Insertar datos en la tabla convocatoria_baremo para elementos que no son de idioma
                     $sqlBaremo = "INSERT INTO convocatoria_baremo (requisito, nota_max, id_baremo, id_convocatoria, valor_minimo, aportalumno)
                                   VALUES (:requisito, :notaMax, :idBaremo, :idConvocatoria, :valorMinimo, :aporteAlumno)";
                     $statementBaremo = $conexion->prepare($sqlBaremo);
-
-                    // Obtener los datos de baremo desde el formulario (ajusta los nombres según tus campos)
-                    $requisito = $_POST['requisito_' . $elementoId];
-                    $notaMax = $_POST['notaMaxima_' . $elementoId];
-                    $valorMinimo = $_POST['valorMinimo_' . $elementoId];
-                    $aporteAlumno = isset($_POST['aporteAlumno_' . $elementoId]) ? 1 : 0;
-
+            
+                    // Obtener los datos de baremo desde el formulario
+                    $requisito = isset($_POST['requisitos'][$elementoId]) ? 1 : 0;
+                    $notaMax = $_POST['notasMaximas'][$elementoId];
+                    $valorMinimo = $_POST['valoresMinimos'][$elementoId];
+                    $aporteAlumno = isset($_POST['aportesAlumno'][$elementoId]) ? 1 : 0;
+            
                     // Insertar datos en convocatoria_baremo
-                    $statementBaremo->bindParam(':requisito', $requisito);
+                    $statementBaremo->bindParam(':requisito', $requisito, PDO::PARAM_BOOL);
                     $statementBaremo->bindParam(':notaMax', $notaMax);
                     $statementBaremo->bindParam(':idBaremo', $elementoId);
                     $statementBaremo->bindParam(':idConvocatoria', $idConvocatoria);
                     $statementBaremo->bindParam(':valorMinimo', $valorMinimo);
-                    $statementBaremo->bindParam(':aporteAlumno', $aporteAlumno);
+                    $statementBaremo->bindParam(':aporteAlumno', $aporteAlumno, PDO::PARAM_BOOL);
                     $statementBaremo->execute();
+                }
             }
-        }
     }
         echo "Convocatoria creada exitosamente";
     } 
@@ -126,7 +136,7 @@ function obtenerIdNivelesIdioma($nivel)
     $conexion = Db::conectar(); // Asegúrate de tener una función Db::conectar() que devuelva una conexión PDO válida
 
     // Consulta para obtener el ID del nivel de idioma según el nombre
-    $sql = "SELECT id FROM niveles_idioma WHERE nombre = :nivel";
+    $sql = "SELECT id FROM niveles_idioma WHERE niveles = :nivel";
     $statement = $conexion->prepare($sql);
     $statement->bindParam(':nivel', $nivel);
     $statement->execute();
@@ -203,13 +213,13 @@ $conexion = null;
                     <input type="checkbox" id="elemento_<?php echo $elemento['id']; ?>" name="elementosBaremo[]" value="<?php echo $elemento['id']; ?>" onchange="mostrarRequisitos()">
                     <div class="requisitos-campos" id="requisitos_<?php echo $elemento['id']; ?>" style="display: none;">
                         <label for="requisito_<?php echo $elemento['id']; ?>">Requisito:</label>
-                        <input type="checkbox" id="requisito_<?php echo $elemento['id']; ?>" name="requisitos[]">
+                        <input type="checkbox" id="requisito_<?php echo $elemento['id']; ?>" name="requisitos[<?php echo $elemento['id']; ?>]">
                         <label for="notaMaxima_<?php echo $elemento['id']; ?>">Nota Máxima:</label>
-                        <input type="text" id="notaMaxima_<?php echo $elemento['id']; ?>" name="notasMaximas[]">
+                        <input type="text" id="notaMaxima_<?php echo $elemento['id']; ?>" name="notasMaximas[<?php echo $elemento['id']; ?>]">
                         <label for="valorMinimo_<?php echo $elemento['id']; ?>">Valor Mínimo:</label>
-                        <input type="text" id="valorMinimo_<?php echo $elemento['id']; ?>" name="valoresMinimos[]">
+                        <input type="text" id="valorMinimo_<?php echo $elemento['id']; ?>" name="valoresMinimos[<?php echo $elemento['id']; ?>]">
                         <label for="aporteAlumno_<?php echo $elemento['id']; ?>">Aporte Alumno:</label>
-                        <input type="checkbox" id="aporteAlumno_<?php echo $elemento['id']; ?>" name="aportesAlumnos[]">
+                        <input type="checkbox" id="aporteAlumno_<?php echo $elemento['id']; ?>" name="aportesAlumno[<?php echo $elemento['id']; ?>]">
                     </div>
                     <div id="camposEspeciales_<?php echo $elemento['id']; ?>" class="campos-especiales" style="display: none;">
                         <table>
@@ -222,27 +232,27 @@ $conexion = null;
                             <tbody>
                                 <tr>
                                     <td>A1</td>
-                                    <td><input type="text" name="nivelA1_<?php echo $elemento['id']; ?>"></td>
+                                    <td><input type="text" id="nivelA1_<?php echo $elemento['id']; ?>" name="nivelA1_<?php echo $elemento['id']; ?>]"></td>
                                 </tr>
                                 <tr>
                                     <td>A2</td>
-                                    <td><input type="text" name="nivelA2_<?php echo $elemento['id']; ?>"></td>
+                                    <td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelA2_<?php echo $elemento['id']; ?>]"></td>
                                 </tr>
                                 <tr>
                                     <td>B1</td>
-                                    <td><input type="text" name="nivelB1_<?php echo $elemento['id']; ?>"></td>
+                                    <td><input type="text" id="nivelB1_<?php echo $elemento['id']; ?>" name="nivelB1_<?php echo $elemento['id']; ?>]"></td>
                                 </tr>
                                 <tr>
                                     <td>B2</td>
-                                    <td><input type="text" name="nivelB2_<?php echo $elemento['id']; ?>"></td>
+                                    <td><input type="text" id="nivelB2_<?php echo $elemento['id']; ?>" name="nivelB2_<?php echo $elemento['id']; ?>]"></td>
                                 </tr>
                                 <tr>
                                     <td>C1</td>
-                                    <td><input type="text" name="nivelC1_<?php echo $elemento['id']; ?>"></td>
+                                    <td><input type="text" id="nivelC1_<?php echo $elemento['id']; ?>" name="nivelC1_<?php echo $elemento['id']; ?>]"></td>
                                 </tr>
                                 <tr>
                                     <td>C2</td>
-                                    <td><input type="text" name="nivelC2_<?php echo $elemento['id']; ?>"></td>
+                                    <td><input type="text" id="nivelC2_<?php echo $elemento['id']; ?>" name="nivelC2_<?php echo $elemento['id']; ?>]"></td>
                                 </tr>
                             </tbody>
                         </table>
