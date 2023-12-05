@@ -35,5 +35,9 @@ if (isset($_GET['menu']))
     {
         require_once './forms/CrearConvocatoria.php';
     }
+    if ($_GET['menu'] == "listarconvocatorias") 
+    {
+        require_once './forms/ListarConvocatorias.php';
+    }
 
 }

@@ -32,8 +32,7 @@ class FuncionesLogin
                 elseif ($role === 'alumno') 
                 {
                     Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $dni);
-                    header('Location: ?menu=alumno');
-                    var_dump("alumno");
+                    header('Location: ?menu=listarconvocatorias');
                     exit;
                 } 
                 else 
