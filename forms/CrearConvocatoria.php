@@ -84,19 +84,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
             
                     $nivelesIdioma = isset($_POST['nivelesIdioma'][$elementoId]) ? $_POST['nivelesIdioma'][$elementoId] : [];
 
-// Verificar si $nivelesIdioma es un array antes de iterar
-if (is_array($nivelesIdioma)) {
-    foreach ($nivelesIdioma as $nivel => $valor) {
-        echo $nivel;
-        $idNivelesIdioma = obtenerIdNivelesIdioma($nivel);
-         
-        // Insertar datos en convocatoria_baremo_idioma
-        $statementBaremoIdioma->bindParam(':valor', $valor);
-        $statementBaremoIdioma->bindParam(':idNivelesIdioma', $idNivelesIdioma);
-        $statementBaremoIdioma->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo);
-        $statementBaremoIdioma->execute();
-    }
-}
+
+                    $sqlObtenerIdConvocatoriaBaremo = "SELECT id FROM convocatoria_baremo WHERE id_baremo = 1 ORDER BY id DESC LIMIT 1";
+                    $statementObtenerIdConvocatoriaBaremo = $conexion->prepare($sqlObtenerIdConvocatoriaBaremo);
+                    $statementObtenerIdConvocatoriaBaremo->execute();
+
+                    $fila = $statementObtenerIdConvocatoriaBaremo->fetch(PDO::FETCH_ASSOC);
+                    $idConvocatoriaBaremo = $fila['id'];
+                    
+
+                // Verificar si $nivelesIdioma es un array antes de iterar
+                if (is_array($nivelesIdioma)) {
+                
+                    foreach ($nivelesIdioma as $nivel => $valor) {
+                        $idNivelesIdioma = obtenerIdNivelesIdioma($nivel);
+                        
+                        // Insertar datos en convocatoria_baremo_idioma
+                        $statementBaremoIdioma->bindParam(':valor', $valor);
+                        $statementBaremoIdioma->bindParam(':idNivelesIdioma', $idNivelesIdioma);
+                        $statementBaremoIdioma->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo);
+                        $statementBaremoIdioma->execute();
+                    }
+                }
                 } else {
                     // Insertar datos en la tabla convocatoria_baremo para elementos que no son de idioma
                     $sqlBaremo = "INSERT INTO convocatoria_baremo (requisito, nota_max, id_baremo, id_convocatoria, valor_minimo, aportalumno)
@@ -222,41 +231,35 @@ $conexion = null;
                         <input type="checkbox" id="aporteAlumno_<?php echo $elemento['id']; ?>" name="aportesAlumno[<?php echo $elemento['id']; ?>]">
                     </div>
                     <div id="camposEspeciales_<?php echo $elemento['id']; ?>" class="campos-especiales" style="display: none;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nivel</th>
-                                    <th>Valor</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>A1</td>
-                                    <td><input type="text" id="nivelA1_<?php echo $elemento['id']; ?>" name="nivelA1_<?php echo $elemento['id']; ?>]"></td>
-                                </tr>
-                                <tr>
-                                    <td>A2</td>
-                                    <td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelA2_<?php echo $elemento['id']; ?>]"></td>
-                                </tr>
-                                <tr>
-                                    <td>B1</td>
-                                    <td><input type="text" id="nivelB1_<?php echo $elemento['id']; ?>" name="nivelB1_<?php echo $elemento['id']; ?>]"></td>
-                                </tr>
-                                <tr>
-                                    <td>B2</td>
-                                    <td><input type="text" id="nivelB2_<?php echo $elemento['id']; ?>" name="nivelB2_<?php echo $elemento['id']; ?>]"></td>
-                                </tr>
-                                <tr>
-                                    <td>C1</td>
-                                    <td><input type="text" id="nivelC1_<?php echo $elemento['id']; ?>" name="nivelC1_<?php echo $elemento['id']; ?>]"></td>
-                                </tr>
-                                <tr>
-                                    <td>C2</td>
-                                    <td><input type="text" id="nivelC2_<?php echo $elemento['id']; ?>" name="nivelC2_<?php echo $elemento['id']; ?>]"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    <table>
+        <tbody>
+            <tr>
+                <td>A1</td>
+                <td><td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelesIdioma[<?php echo $elemento['id']; ?>][A1]"></td></td>
+            </tr>
+            <tr>
+                <td>A2</td>
+                <td><td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelesIdioma[<?php echo $elemento['id']; ?>][A2]"></td></td>
+            </tr>
+            <tr>
+                <td>B1</td>
+                <td><td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelesIdioma[<?php echo $elemento['id']; ?>][B1]"></td></td>
+            </tr>
+            <tr>
+                <td>B2</td>
+                <td><td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelesIdioma[<?php echo $elemento['id']; ?>][B2]"></td></td>
+            </tr>
+            <tr>
+                <td>C1</td>
+                <td><td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelesIdioma[<?php echo $elemento['id']; ?>][C1]"></td></td>
+            </tr>
+            <tr>
+                <td>C2</td>
+                <td><td><input type="text" id="nivelA2_<?php echo $elemento['id']; ?>" name="nivelesIdioma[<?php echo $elemento['id']; ?>][C2]"></td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
                 </li>
             <?php endforeach; ?>
         </ul>
