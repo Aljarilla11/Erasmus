@@ -9,6 +9,20 @@ $sqlConvocatorias = "SELECT c.id, c.movilidades, c.tipo, c.fecha_inicio, c.fecha
 $resultadoConvocatorias = $conexion->query($sqlConvocatorias);
 $convocatorias = $resultadoConvocatorias->fetchAll(PDO::FETCH_ASSOC);
 $conexion = null;
+
+if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) {
+    // Obtener el ID de convocatoria desde el formulario
+    $idConvocatoria = $_POST['idConvocatoria'];
+
+    // Aquí puedes realizar cualquier lógica adicional para manejar la solicitud según tus necesidades
+
+    // Redireccionar a la nueva página "Solicitud" con un encabezado personalizado
+    header("Location: ?menu=solicitarconvocatoria&idConvocatoria=$idConvocatoria");
+    exit();
+} else {
+    // Manejar el caso en el que no se proporcionó un ID de convocatoria válido
+    echo "Error: ID de convocatoria no válido.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +48,7 @@ $conexion = null;
             <p><strong>Fecha de Inicio Definitiva:</strong> <?php echo $convocatoria['fecha_inicio_definitiva']; ?></p>
             
             <!-- Formulario de solicitud -->
-            <form action="procesar_solicitud.php" method="post">
+            <form action="" method="post">
                 <input type="hidden" name="idConvocatoria" value="<?php echo $convocatoria['id']; ?>">
                 <button type="submit">Solicitar</button>
             </form>
