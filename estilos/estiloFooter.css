@@ -1,0 +1,23 @@
+/* estiloFooter.css */
+
+.footer {
+    background-color: #4CAF50;  /* Verde oscuro */
+    color: white;  /* Texto blanco */
+    padding: 10px;
+    text-align: center;
+}
+
+.footer a {
+    color: white;  /* Enlaces en texto blanco */
+    text-decoration: none;  /* Sin subrayado en los enlaces */
+    margin: 0 10px;  /* Margen entre enlaces */
+}
+
+.footer a:hover {
+    text-decoration: underline;  /* Subrayar enlaces al pasar el ratón sobre ellos */
+}
+
+/* Añade este estilo para el texto de derechos reservados */
+.footer p {
+    margin-top: 10px;
+}

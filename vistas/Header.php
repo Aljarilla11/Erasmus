@@ -20,9 +20,8 @@ $menu_actual = isset($_GET['menu']) ? $_GET['menu'] : '';
 
 <header>
     <ul class="menu">
-        <li class="first"><a href="?menu=inicio">AUTOESCUELA ILITURGI</a></li>
+        <li class="first"><a href="?menu=inicio">BECAS ERASMUS</a></li>
         <li><a href="?menu=inicio" <?php if ($menu_actual === 'inicio') echo 'class="active"'; ?>>INICIO</a></li>
-        <li><a href="?menu=galeria">VER GALERÍA</a></li>
         <li><a href="?menu=login">LOGIN</a></li>
         <li><a href="?menu=registro">REGISTRO</a></li>
         <li><a href="?menu=contacto">CONTACTO</a></li>
@@ -36,7 +35,7 @@ $menu_actual = isset($_GET['menu']) ? $_GET['menu'] : '';
 <body>
     <?php if ($menu_actual == 'inicio' || $menu_actual == '') { ?>
         <!-- Imagen debajo del menú -->
-        <img class="imagen" src="./imagenes/imagenfondo.jpg" alt="">
+        <img class="imagen" src="./imagenes/imagenfondo.png" alt="">
     <?php } ?>
 </body>
 </html>

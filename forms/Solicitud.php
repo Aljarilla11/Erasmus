@@ -5,14 +5,15 @@ if (isset($_GET['idConvocatoria']) && is_numeric($_GET['idConvocatoria'])) {
 
     // Obtener los IDs de baremo para la convocatoria específica
     $conexion = Db::conectar();
+
+    // Obtener nombres de elementos de baremo para cada ID de baremo
+    $nombresBaremo = [];
+
     $sqlBaremo = "SELECT id_baremo FROM convocatoria_baremo WHERE id_convocatoria = :idConvocatoria";
     $statementBaremo = $conexion->prepare($sqlBaremo);
     $statementBaremo->bindParam(':idConvocatoria', $idConvocatoria);
     $statementBaremo->execute();
     $idBaremos = $statementBaremo->fetchAll(PDO::FETCH_ASSOC);
-
-    // Obtener nombres de elementos de baremo para cada ID de baremo
-    $nombresBaremo = [];
 
     foreach ($idBaremos as $idBaremo) {
         $sqlNombreBaremo = "SELECT nombre FROM item_baremo WHERE id = :idBaremo";
@@ -21,14 +22,15 @@ if (isset($_GET['idConvocatoria']) && is_numeric($_GET['idConvocatoria'])) {
         $statementNombreBaremo->execute();
         $nombreBaremo = $statementNombreBaremo->fetch(PDO::FETCH_ASSOC);
 
-        $nombresBaremo[] = $nombreBaremo['nombre'];
+        if ($nombreBaremo) {
+            array_push($nombresBaremo, $nombreBaremo['nombre']);
+        }
     }
-
-    var_dump($nombresBaremo);
 
     $conexion = null;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
