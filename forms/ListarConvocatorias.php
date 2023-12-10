@@ -19,9 +19,6 @@ if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) {
     // Redireccionar a la nueva página "Solicitud" con un encabezado personalizado
     header("Location: ?menu=solicitarconvocatoria&idConvocatoria=$idConvocatoria");
     exit();
-} else {
-    // Manejar el caso en el que no se proporcionó un ID de convocatoria válido
-    echo "Error: ID de convocatoria no válido.";
 }
 ?>
 
@@ -31,6 +28,7 @@ if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convocatorias Disponibles</title>
+    <link rel="stylesheet" href="../estilos/estiloListarConvocatorias.css">
 </head>
 <body>
 

@@ -1,0 +1,55 @@
+form {
+    background-color: #fff;  /* Fondo blanco */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    color: #4CAF50;  /* Texto verde */
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin: auto;  /* Centrar el formulario horizontalmente */
+    margin-top: 10vh;  /* Ajustar la distancia desde la parte superior según sea necesario */
+}
+
+h1 {
+    color: #4CAF50;  /* Texto verde */
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;  /* Verde */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;  /* Verde más oscuro al pasar el ratón */
+}
+
+input[type="submit"]:active {
+    background-color: #45a049;  /* Verde más oscuro cuando se presiona */
+}
+
+p {
+    text-align: center;
+}
+
+a {
+    color: #4CAF50;  /* Enlaces en texto verde */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;  /* Subrayar enlaces al pasar el ratón sobre ellos */
+}

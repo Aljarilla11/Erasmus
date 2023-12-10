@@ -43,5 +43,9 @@ if (isset($_GET['menu']))
     {
         require_once './forms/Solicitud.php';
     }
+    if ($_GET['menu'] == "contacto") 
+    {
+        require_once './forms/Contacto.php';
+    }
 
 }

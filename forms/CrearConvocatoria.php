@@ -181,12 +181,8 @@ $conexion = null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Convocatorias</title>
-    <style>
-        label { display: block; margin-bottom: 8px; }
-        .campos-especiales table { margin-top: 10px; border-collapse: collapse; }
-        .campos-especiales th, .campos-especiales td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    </style>
     <script src="../js/CheckBoxDestinatarios.js"></script>
+    <link rel="stylesheet" href="../estilos/estiloCrearConvocatoria.css">
 </head>
 <body>
 

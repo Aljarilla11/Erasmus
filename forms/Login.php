@@ -36,7 +36,5 @@ Login::loginUser();
         
         <input type="submit" id="btnIniciarSesion" name="enviar" value="Iniciar Sesión">
     </form>
-    <p>¿No tienes una cuenta? <a href="?menu=registro">Regístrate</a></p>
-    <p>¿Has olvidado tu contraseña? <a href="?menu=recuperar">Recupérala aquí</a></p>
 </body>
 </html>

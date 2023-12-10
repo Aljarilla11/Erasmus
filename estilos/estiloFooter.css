@@ -1,10 +1,12 @@
-/* estiloFooter.css */
-
 .footer {
     background-color: #4CAF50;  /* Verde oscuro */
     color: white;  /* Texto blanco */
-    padding: 10px;
+    padding: 20px;
     text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;  /* Cambia de 'top' a 'bottom' para posicionar en la parte inferior */
+    width: 100%;
 }
 
 .footer a {

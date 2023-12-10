@@ -14,7 +14,7 @@
         <a href="#politicacookies">Política de Cookies</a> | 
         <a href="#politicaprivacidad">Política de Privacidad</a>
     </div>
-    <p>Autoescuela © 2023. Todos los derechos reservados.</p>
+    <p>Becas Erasmus © 2023. Todos los derechos reservados.</p>
     </footer>
 
 </body>
