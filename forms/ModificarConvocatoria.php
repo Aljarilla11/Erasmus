@@ -13,32 +13,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         switch ($_POST['action']) {
             case 'modificar':
-                // Lógica para Modificar
+                header("Location: ?menu=editarconvocatoria&idConvoctoria=$idConvocatoria");
+                exit();
                 break;
             case 'eliminar':
-                
                     $conexion = Db::conectar();
-
+                
                     // Inicia una transacción para asegurar la integridad de los datos
                     $conexion->beginTransaction();
-
+                
                     // Elimina registros de la tabla Convocatoria
-                    $sqlDeleteConvocatoria = "DELETE FROM Convocatoria WHERE id = :idConvocatoria";
+                    $sqlDeleteConvocatoria = "DELETE FROM convocatorias WHERE id = :idConvocatoria";
                     $stmtDeleteConvocatoria = $conexion->prepare($sqlDeleteConvocatoria);
                     $stmtDeleteConvocatoria->bindParam(':idConvocatoria', $idConvocatoria, PDO::PARAM_INT);
                     $stmtDeleteConvocatoria->execute();
 
-                    
-
                     // Confirma la transacción si todas las operaciones fueron exitosas
                     $conexion->commit();
-
+                
                     // Cierra la conexión
                     $conexion = null;
-
-                    // Redirige a la página actual para evitar envíos de formulario repetidos
-                    header("Location: ?menu=listarconvocatorias");
-                    exit();
+                    
+                    echo "Operación exitosa: Convocatoria y relacionados eliminados.";
+                
                 break;
             default:
                 // Acción no reconocida
@@ -46,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Redirige a la página actual para evitar envíos de formulario repetidos
-        header("Location: ?menu=listarconvocatorias");
+        header("Location: ?menu=modificarconvocatoria");
         exit();
     }
 }
