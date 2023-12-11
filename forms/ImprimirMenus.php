@@ -17,7 +17,7 @@ class ImprimirMenus
                 <a href="?menu=crearconvocatoria">Crear Convocatoria</a>
             </li>
             <li class="submenu">
-                <a href="?menu=adminuser">Modificar Convocatoria</a>
+                <a href="?menu=modificarconvocatoria">Modificar Convocatoria</a>
             </li>
             <li class="submenu">
                 <a href="?menu=adminuser">Administrar Solicitudes</a>

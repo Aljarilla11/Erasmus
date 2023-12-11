@@ -47,5 +47,10 @@ if (isset($_GET['menu']))
     {
         require_once './forms/Contacto.php';
     }
+    if ($_GET['menu'] == "modificarconvocatoria") 
+    {
+        require_once './forms/ModificarConvocatoria.php';
+    }
+
 
 }
