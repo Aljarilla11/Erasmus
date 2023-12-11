@@ -26,13 +26,13 @@ class FuncionesLogin
                 if ($role === 'admin') 
                 {
                     Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $dni);
-                    header('Location: ?menu=crearconvocatoria');
+                    header('Location: ?menu=admin');
                     exit;
                 } 
                 elseif ($role === 'alumno') 
                 {
                     Sesion::guardarSesion('usuario', $_SESSION['usuario'] = $dni);
-                    header('Location: ?menu=listarconvocatorias');
+                    header('Location: ?menu=alumno');
                     exit;
                 } 
                 else 

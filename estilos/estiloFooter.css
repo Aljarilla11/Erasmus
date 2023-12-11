@@ -1,3 +1,7 @@
+body {
+    margin-bottom: 200px; /* Ajusta este valor según la altura de tu pie de página */
+}
+
 .footer {
     background-color: #4CAF50;  /* Verde oscuro */
     color: white;  /* Texto blanco */
@@ -5,7 +9,7 @@
     text-align: center;
     position: fixed;
     left: 0;
-    bottom: 0;  /* Cambia de 'top' a 'bottom' para posicionar en la parte inferior */
+    bottom: 0;
     width: 100%;
 }
 
@@ -19,7 +23,3 @@
     text-decoration: underline;  /* Subrayar enlaces al pasar el ratón sobre ellos */
 }
 
-/* Añade este estilo para el texto de derechos reservados */
-.footer p {
-    margin-top: 10px;
-}

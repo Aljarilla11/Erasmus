@@ -1,17 +1,17 @@
 section {
-    background-color: #282828;
-    color: #FF6400; 
+    background-color: #4CAF50;
+    color: #ffffff; 
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     width: 80%;
     max-width: 600px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin: 0 auto; 
+    margin: 70px auto 0; /* Se ha agregado un margen superior de 20px y se centra horizontalmente */
 }
 
 h2 {
-    border-bottom: 2px solid #FF6400;
+    border-bottom: 2px solid #ffffff;
     padding-bottom: 5px;
     margin-bottom: 10px;
 }

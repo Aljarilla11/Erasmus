@@ -1,11 +1,10 @@
-
-
 h1 {
     text-align: center;
     color: #333; /* Color de texto gris oscuro */
 }
 
-div {
+
+.listconvocatorias {
     background-color: #fff; /* Fondo blanco para cada convocatoria */
     border: 1px solid #ddd; /* Borde delgado gris */
     border-radius: 10px; /* Bordes redondeados */

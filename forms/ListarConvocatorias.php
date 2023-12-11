@@ -35,7 +35,7 @@ if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) {
     <h1>Convocatorias Disponibles</h1>
 
     <?php foreach ($convocatorias as $convocatoria): ?>
-        <div>
+        <div class="listconvocatorias">
             <h2><?php echo $convocatoria['movilidades'] . " Plazas"; ?></h2>
             <p><strong>Proyecto:</strong> <?php echo $convocatoria['nombre_proyecto']; ?></p>
             <p><strong>Tipo:</strong> <?php echo $convocatoria['tipo']; ?></p>
