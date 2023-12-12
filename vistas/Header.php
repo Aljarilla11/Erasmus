@@ -32,7 +32,7 @@ $menu_actual = isset($_GET['menu']) ? $_GET['menu'] : '';
     </ul>
 </header>
 <body>
-    <?php if ($menu_actual == 'inicio') { ?>
+    <?php if ($menu_actual == 'inicio' || $menu_actual == "") { ?>
         <!-- Imagen debajo del menú -->
         <img class="imagen" src="./imagenes/imagenfondo.png" alt="">
     <?php } ?>

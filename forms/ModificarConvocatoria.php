@@ -4,6 +4,10 @@ $sqlConvocatorias = "SELECT c.id, c.movilidades, c.tipo, c.fecha_inicio, c.fecha
                     FROM convocatorias c
                     INNER JOIN proyectos p ON c.id_proyecto = p.id";
 
+$sqlConvocatorias = "SELECT c.id, c.movilidades, c.tipo, c.fecha_inicio, c.fecha_fin, c.fecha_inicio_pruebas, c.fecha_fin_pruebas, c.fecha_inicio_definitiva, p.nombre as nombre_proyecto
+FROM convocatorias c
+INNER JOIN proyectos p ON c.id_proyecto = p.id";
+
 $resultadoConvocatorias = $conexion->query($sqlConvocatorias);
 $convocatorias = $resultadoConvocatorias->fetchAll(PDO::FETCH_ASSOC);
 
@@ -77,6 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>
         </thead>
         <tbody>
+        <?php
+
+        ?>
             <?php foreach ($convocatorias as $convocatoria): ?>
                 <tr>
                     <td><?php echo $convocatoria['movilidades'] . " Plazas"; ?></td>
