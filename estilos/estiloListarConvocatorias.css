@@ -1,24 +1,24 @@
 h1 {
     text-align: center;
-    color: #333; /* Color de texto gris oscuro */
+    color: #333;
 }
 
 
 .listconvocatorias {
-    background-color: #fff; /* Fondo blanco para cada convocatoria */
-    border: 1px solid #ddd; /* Borde delgado gris */
-    border-radius: 10px; /* Bordes redondeados */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     padding: 15px;
     margin: 20px;
 }
 
 h2 {
-    color: #007BFF; /* Color de texto azul */
+    color: #007BFF;
 }
 
 button {
-    background-color: #28A745; /* Color de fondo verde */
-    color: #fff; /* Color de texto blanco */
+    background-color: #28A745;
+    color: #fff;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
@@ -26,12 +26,12 @@ button {
 }
 
 button:hover {
-    background-color: #218838; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+    background-color: #218838;
 }
 
 hr {
-    margin-top: 20px; /* Espaciado superior para la línea horizontal */
-    margin-bottom: 20px; /* Espaciado inferior para la línea horizontal */
+    margin-top: 20px;
+    margin-bottom: 20px;
     border: 0;
-    border-top: 1px solid #ddd; /* Línea horizontal delgada gris */
+    border-top: 1px solid #ddd;
 }

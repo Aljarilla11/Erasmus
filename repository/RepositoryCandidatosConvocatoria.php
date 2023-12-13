@@ -22,6 +22,15 @@ class RepositoryCandidatosConvocatoria
         return $candidatosConvocatoria;
     }
 
+    public function obtenerCandidatosConvocatoriaPorConvocatoria($idConvocatoria)
+    {
+        $sql = "SELECT * FROM candidatos_convocatoria WHERE id_convocatoria = :idConvocatoria";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':idConvocatoria', $idConvocatoria, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function obtenerCandidatoConvocatoriaPorId($id)
     {
         $sql = "SELECT * FROM candidatos_convocatoria WHERE id = :id";

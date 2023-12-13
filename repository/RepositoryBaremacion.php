@@ -28,6 +28,16 @@ class RepositoryBaremacion
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function obtenerBaremacionesPorConvocatoria($idConvocatoria)
+    {
+        $sql = "SELECT * FROM baremacion WHERE id_convocatoria = :idConvocatoria";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':idConvocatoria', $idConvocatoria, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     public function actualizarBaremacionPorId($id, $nuevosDatos) {
         $sql = "UPDATE baremacion SET id_candidatos = :id_candidatos, id_convocatoria = :id_convocatoria, id_item_baremo = :id_item_baremo, notas = :notas WHERE id = :id";
         $stmt = $this->conexion->prepare($sql);

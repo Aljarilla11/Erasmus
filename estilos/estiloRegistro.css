@@ -1,18 +1,18 @@
 form {
-    background-color: #fff;  /* Fondo blanco */
+    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    color: #4CAF50;  /* Texto verde */
+    color: #4CAF50; 
     width: 100%;
     max-width: 400px;
     text-align: center;
-    margin: auto;  /* Centrar el formulario horizontalmente */
-    margin-top: 10vh;  /* Ajustar la distancia desde la parte superior según sea necesario */
+    margin: auto; 
+    margin-top: 10vh;
 }
 
 h1 {
-    color: #4CAF50;  /* Texto verde */
+    color: #4CAF50;
     text-align: center;
 }
 
@@ -35,7 +35,7 @@ select {
 }
 
 #seccionTutor h2 {
-    color: #4CAF50;  /* Texto verde */
+    color: #4CAF50; 
     text-align: center;
 }
 
@@ -47,7 +47,7 @@ select {
 }
 
 input[type="submit"] {
-    background-color: #4CAF50;  /* Verde */
+    background-color: #4CAF50; 
     color: white;
     padding: 10px 20px;
     border: none;
@@ -57,11 +57,11 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #45a049;  /* Verde más oscuro al pasar el ratón */
+    background-color: #45a049;
 }
 
 input[type="submit"]:active {
-    background-color: #45a049;  /* Verde más oscuro cuando se presiona */
+    background-color: #45a049; 
 }
 
 p {
@@ -69,10 +69,10 @@ p {
 }
 
 a {
-    color: #4CAF50;  /* Enlaces en texto verde */
+    color: #4CAF50; 
     text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;  /* Subrayar enlaces al pasar el ratón sobre ellos */
+    text-decoration: underline;
 }

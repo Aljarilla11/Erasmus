@@ -4,7 +4,7 @@ window.addEventListener("load", function() {
     var idConvocatoria = parametros.get("idConvocatoria");
 
     // Realiza la solicitud para obtener los datos del candidato
-    fetch(`http://erasmusbeca.com/api/ApiCandidatos.php?id=${idCandidato}`)
+    fetch(`http://erasmusbecas.com/api/ApiCandidatos.php?id=${idCandidato}`)
         .then(response => response.json())
         .then(data => {
             // Rellena los campos del formulario con los datos del candidato

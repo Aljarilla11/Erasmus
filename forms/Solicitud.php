@@ -44,6 +44,15 @@ else
     echo $_SESSION['usuario'];
     echo "<p>Rol no reconocido</p>";
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Procesar los datos del formulario si es necesario
+    
+    // Redirigir a otra página
+    header("Location: ?menu=listarconvocatorias");
+    exit(); 
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -51,6 +60,7 @@ else
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Solicitud</title>
+    <link rel="stylesheet" href="../estilos/estilosSolicitudConvocatoria.css">
     <script src="../js/SolicitarConvocatoria.js"></script>
 </head>
 <body>

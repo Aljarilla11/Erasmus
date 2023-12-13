@@ -41,6 +41,17 @@ class RepositoryDestinatariosConvocatoria
         $stmt->execute();
     }
 
+    public function obtenerDestinatariosPorConvocatoria($idConvocatoria)
+    {
+        $sql = "SELECT * FROM destinatarios_convocatoria WHERE id_convocatoria = :id_convocatoria";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':id_convocatoria', $idConvocatoria, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Devolver todos los registros como un array asociativo
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function eliminarDestinatarioConvocatoriaPorId($id)
     {
         $sql = "DELETE FROM destinatarios_convocatoria WHERE id = :id";

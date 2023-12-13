@@ -13,7 +13,7 @@ class RepositoryConvocatoria
 
     public function obtenerConvocatorias()
     {
-        $sql = "SELECT * FROM convocatoria";
+        $sql = "SELECT * FROM convocatorias";
         $result = $this->conexion->query($sql);
         $convocatorias = [];
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -24,7 +24,7 @@ class RepositoryConvocatoria
 
     public function obtenerConvocatoriaPorId($id)
     {
-        $sql = "SELECT * FROM convocatoria WHERE id = :id";
+        $sql = "SELECT * FROM convocatorias WHERE id = :id";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -33,7 +33,7 @@ class RepositoryConvocatoria
 
     public function editarConvocatoriaPorId($id, $nuevoMovilidades, $nuevoTipo, $nuevaFechaInicio, $nuevaFechaFin, $nuevaFechaInicioPruebas, $nuevaFechaFinPruebas, $nuevaFechaInicioDefinitiva, $nuevoIdProyecto)
     {
-        $sql = "UPDATE convocatoria SET movilidades = :nuevo_movilidades, tipo = :nuevo_tipo, fecha_inicio = :nueva_fecha_inicio, fecha_fin = :nueva_fecha_fin, fecha_inicio_pruebas = :nueva_fecha_inicio_pruebas, fecha_fin_pruebas = :nueva_fecha_fin_pruebas, fecha_inicio_definitiva = :nueva_fecha_inicio_definitiva, id_proyecto = :nuevo_id_proyecto WHERE id = :id";
+        $sql = "UPDATE convocatorias SET movilidades = :nuevo_movilidades, tipo = :nuevo_tipo, fecha_inicio = :nueva_fecha_inicio, fecha_fin = :nueva_fecha_fin, fecha_inicio_pruebas = :nueva_fecha_inicio_pruebas, fecha_fin_pruebas = :nueva_fecha_fin_pruebas, fecha_inicio_definitiva = :nueva_fecha_inicio_definitiva, id_proyecto = :nuevo_id_proyecto WHERE id = :id";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindParam(':nuevo_movilidades', $nuevoMovilidades);
         $stmt->bindParam(':nuevo_tipo', $nuevoTipo);
@@ -49,7 +49,7 @@ class RepositoryConvocatoria
 
     public function eliminarConvocatoriaPorId($id)
     {
-        $sql = "DELETE FROM convocatoria WHERE id = :id";
+        $sql = "DELETE FROM convocatorias WHERE id = :id";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
