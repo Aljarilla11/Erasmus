@@ -7,8 +7,7 @@
 <body>
 
 <footer class="footer">
-    <div class="footer-links"> 
-        <a href="?menu=contacto">Horarios</a> | 
+    <div class="footer-links">  
         <a href="#avisolegal">Aviso Legal</a> | 
         <a href="#politicacookies">Política de Cookies</a> | 
         <a href="#politicaprivacidad">Política de Privacidad</a>
