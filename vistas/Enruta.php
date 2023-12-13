@@ -55,6 +55,10 @@ if (isset($_GET['menu']))
     {
         require_once './forms/EditarConvocatoria.php';
     }
+    if ($_GET['menu'] == "versolicitud") 
+    {
+        require_once './forms/VerSolicitudes.php';
+    }
 
 
 }

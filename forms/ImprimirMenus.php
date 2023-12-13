@@ -44,7 +44,7 @@ class ImprimirMenus
         <a href="?menu=listarconvocatorias">Ver Convocatorias</a>
     </li>
     <li class="submenu">
-        <a href="?menu=crearPregunta">Ver Solicitudes Echadas</a>
+        <a href="?menu=versolicitud">Ver Solicitudes Echadas</a>
     </li>
 </ul>
 
