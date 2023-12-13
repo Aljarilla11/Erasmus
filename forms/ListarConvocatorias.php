@@ -8,7 +8,29 @@ $sqlConvocatorias = "SELECT c.id, c.movilidades, c.tipo, c.fecha_inicio, c.fecha
 
 $resultadoConvocatorias = $conexion->query($sqlConvocatorias);
 $convocatorias = $resultadoConvocatorias->fetchAll(PDO::FETCH_ASSOC);
+
+
+$dni = Sesion::leerSesion('usuario');
+
+$sql = "SELECT id FROM candidatos WHERE dni = :dni";
+$statement = $conexion->prepare($sql);
+$statement->bindParam(':dni', $dni, PDO::PARAM_STR);
+$statement->execute();
+
+$resultado = $statement->fetch(PDO::FETCH_ASSOC);
+
 $conexion = null;
+
+if ($resultado) {
+    $idCandidato = $resultado['id'];
+
+    // Ahora puedes utilizar $idCandidato según tus necesidades
+    echo "ID del candidato: $idCandidato";
+} else {
+    // No se encontró ningún candidato con el DNI proporcionado
+    echo "Candidato no encontrado";
+}
+
 
 if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) {
     // Obtener el ID de convocatoria desde el formulario
@@ -17,7 +39,7 @@ if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) {
     // Aquí puedes realizar cualquier lógica adicional para manejar la solicitud según tus necesidades
 
     // Redireccionar a la nueva página "Solicitud" con un encabezado personalizado
-    header("Location: ?menu=solicitarconvocatoria&idConvocatoria=$idConvocatoria");
+    header("Location: ?menu=solicitarconvocatoria&idConvocatoria=$idConvocatoria&id=$idCandidato");
     exit();
 }
 ?>

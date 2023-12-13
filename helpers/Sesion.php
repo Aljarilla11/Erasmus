@@ -16,6 +16,12 @@ class Sesion
     {
         $_SESSION[$clave] = $valor;
     }
+
+    public static function leerSesion($clave)
+    {
+        $valor =  $_SESSION[$clave];
+        return $valor;
+    }
 }
 
 ?>
