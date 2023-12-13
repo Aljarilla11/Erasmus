@@ -31,6 +31,15 @@ class RepositoryConvocatoriaBaremo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function obtenerConvocatoriaBaremoPorConvocatoria($idConvocatoria)
+    {
+        $sql = "SELECT * FROM convocatoria_baremo WHERE id_convocatoria = :idConvocatoria";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':idConvocatoria', $idConvocatoria, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function editarConvocatoriaBaremoPorId($id, $nuevoRequisito, $nuevaNotaMax, $nuevoIdBaremo, $nuevaIdConvocatoria, $nuevoValorMinimo)
     {
         $sql = "UPDATE convocatoria_baremo SET requisito = :nuevo_requisito, nota_max = :nueva_nota_max, id_baremo = :nuevo_id_baremo, id_convocatoria = :nueva_id_convocatoria, valor_minimo = :nuevo_valor_minimo WHERE id = :id";
