@@ -146,6 +146,7 @@ $conexion = null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Convocatoria</title>
+    <link rel="stylesheet" href="../estilos/estiloEditarConvocatoria.css">
 </head>
 <body>
 

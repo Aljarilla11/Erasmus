@@ -1,5 +1,5 @@
 h1 {
-    color: #4CAF50;
+    color: #2e7d32;
     text-align: center;
 }
 
@@ -8,7 +8,7 @@ form {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    color: #4CAF50; 
+    color: #2e7d32; 
     width: 80%;
     max-width: 400px;
     margin: 20px auto;
@@ -27,7 +27,7 @@ input {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #2e7d32;
     color: white;
     padding: 10px 20px;
     border: none;

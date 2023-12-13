@@ -23,6 +23,11 @@ class ImprimirMenus
                 <a href="?menu=adminuser">Administrar Solicitudes</a>
             </li>
         </ul>
+        <?php
+        if (isset($_GET['menu']) && $_GET['menu'] === 'admin') {
+            echo '<img class="imagen" src="./imagenes/becas.jpg" alt="">';
+        }
+        ?>
         </body>
         </html>
         <?php
@@ -47,6 +52,12 @@ class ImprimirMenus
         <a href="?menu=versolicitud">Ver Solicitudes Echadas</a>
     </li>
 </ul>
+
+<?php
+if (isset($_GET['menu']) && $_GET['menu'] === 'alumno') {
+    echo '<img class="imagen" src="./imagenes/infobeca.png" alt="">';
+}
+?>
 
 </body>
 </html>

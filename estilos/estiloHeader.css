@@ -1,5 +1,5 @@
 header {
-    background-color: #4CAF50; 
+    background-color: #2e7d32; 
     padding: 10px;
 }
 
@@ -30,13 +30,13 @@ header {
 
 .menu li.first a {
     background-color: #ffffff;  
-    color: #4CAF50;  
+    color: #2e7d32;  
     padding: 8px 15px;  
     border-radius: 5px;
 }
 
 .menu li.first a:hover {
-    background-color: #4CAF50;
+    background-color: #2e7d32;
     color: #ffffff; 
 }
 
@@ -47,6 +47,7 @@ header {
     max-width: 100%;
     max-height: 500px; 
     height: auto;
+    margin-top: 120px;
 }
 
 body {

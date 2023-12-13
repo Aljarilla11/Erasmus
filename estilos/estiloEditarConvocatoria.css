@@ -1,0 +1,44 @@
+h1 {
+    color: #2e7d32;
+    text-align: center;
+}
+
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2e7d32;
+}
+
+input,
+select,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+    margin-bottom: 5px;
+}
+
+button {
+    background-color: #2e7d32;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4caf50;
+}
