@@ -8,14 +8,16 @@ class Baremacion
     public $id_convocatoria;
     public $id_item_baremo;
     public $notas;
+    public $url;
 
     // Constructor
-    public function __construct($id, $id_candidatos, $id_convocatoria, $id_item_baremo, $notas) {
+    public function __construct($id, $id_candidatos, $id_convocatoria, $id_item_baremo, $notas, $url) {
         $this->id = $id;
         $this->id_candidatos = $id_candidatos;
         $this->id_convocatoria = $id_convocatoria;
         $this->id_item_baremo = $id_item_baremo;
         $this->notas = $notas;
+        $this->url = $url;
     }
 
     // Métodos getter
@@ -39,6 +41,10 @@ class Baremacion
         return $this->notas;
     }
 
+    public function getUrl() {
+        return $this->url;
+    }
+
     // Métodos setter
     public function setId($id) {
         $this->id = $id;
@@ -58,6 +64,10 @@ class Baremacion
 
     public function setNotas($notas) {
         $this->notas = $notas;
+    }
+
+    public function setUrl($url) {
+        $this->url = $url;
     }
 }
 

@@ -3,6 +3,8 @@ window.addEventListener("load", function() {
     var idCandidato = parametros.get("id");
     var idConvocatoria = parametros.get("idConvocatoria");
 
+    console.log(idConvocatoria)
+
     // Realiza la solicitud para obtener los datos del candidato
     fetch(`http://erasmusbecas.com/api/ApiCandidatos.php?id=${idCandidato}`)
         .then(response => response.json())
@@ -23,29 +25,36 @@ window.addEventListener("load", function() {
                     // Filtrar los convocatoria_baremo que permiten aportes de alumnos
                     var convocatoriaBaremosAporteAlumno = convocatoriaBaremos.filter(convBaremo => convBaremo.aportalumno);
                     console.log(convocatoriaBaremos)
+                    console.log(convocatoriaBaremosAporteAlumno)
                     // Realizar solicitud para obtener los item_baremos asociados a cada convocatoria_baremo
                     Promise.all(convocatoriaBaremosAporteAlumno.map(convBaremo =>
-                        fetch(`http://erasmusbecas.com/api/ApiItemBaremo.php?idConvocatoriaBaremo=${convBaremo.id}`)
+                        fetch(`http://erasmusbecas.com/api/ApiItemBaremo.php?idConvocatoriaBaremo=${convBaremo.id_baremo}`)
                             .then(response => response.json())
                     ))
                     .then(itemBaremos => {
                         // Crear elementos en el formulario para cada item_baremo
                         var formulario = document.querySelector('form');
-                        itemBaremos.forEach(item => {
-                            // Crear un nuevo elemento de etiqueta <input> o <textarea> según sea necesario
-                            var inputElement = document.createElement('input');
-                            inputElement.type = 'file'; // Configurar como tipo de archivo para la carga de archivos
-                            inputElement.name = 'aportesAlumno[' + item.id + ']'; // Usar el id del item_baremo como nombre del campo
-                            inputElement.placeholder = 'Adjuntar archivo para ' + item.nombre;
+                        itemBaremos.forEach(itemArray => {
+                            // Acceder al objeto dentro del array
+                            var item = itemArray[0];
 
-                            // Crear una etiqueta <label> para describir el campo
-                            var labelElement = document.createElement('label');
-                            labelElement.for = inputElement.name;
-                            labelElement.textContent = item.nombre;
+                            // Verifica si hay datos y que las propiedades esperadas están presentes
+                            if (item && item.id !== undefined && item.nombre !== undefined) {
+                                // Crear un nuevo elemento de etiqueta <input> o <textarea> según sea necesario
+                                var inputElement = document.createElement('input');
+                                inputElement.type = 'file'; // Configurar como tipo de archivo para la carga de archivos
+                                inputElement.name = 'aportesAlumno[' + item.id + ']'; // Usar el id del item_baremo como nombre del campo
+                                inputElement.placeholder = 'Adjuntar archivo para ' + item.nombre;
 
-                            // Agregar elementos al formulario
-                            formulario.appendChild(labelElement);
-                            formulario.appendChild(inputElement);
+                                // Crear una etiqueta <label> para describir el campo
+                                var labelElement = document.createElement('label');
+                                labelElement.for = inputElement.name;
+                                labelElement.textContent = item.nombre;
+
+                                // Agregar elementos al formulario
+                                formulario.appendChild(labelElement);
+                                formulario.appendChild(inputElement);
+                            }
                         });
                     })
                     .catch(error => console.error('Error al obtener datos del item_baremo:', error));

@@ -7,8 +7,30 @@ header('Content-Type: application/json');
 $conexion = "";  // Asegúrate de establecer la conexión a la base de datos
 $repositoryBaremacion = new RepositoryBaremacion($conexion);
 
+// Crear una nueva baremación
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Asegúrate de que la solicitud sea de tipo POST y maneja adecuadamente la subida de archivos
+
+    // Obtén los datos del formulario
+    $idCandidato = $_POST['idCandidato']; // Ajusta según tu formulario
+    $idConvocatoria = $_POST['idConvocatoria']; // Ajusta según tu formulario
+    $idItemBaremo = $_POST['idItemBaremo']; // Ajusta según tu formulario
+    $url = $_FILES['archivo']['name']; // Ajusta según tu formulario y el nombre del campo del archivo
+
+    try {
+        // Crear la baremación en la base de datos
+        $repositoryBaremacion->crearBaremacion($idCandidato, $idConvocatoria, $idItemBaremo, $url);
+
+        // Responder con un mensaje de éxito o cualquier otra información necesaria
+        echo json_encode(['success' => true, 'message' => 'Baremación creada con éxito']);
+    } catch (PDOException $e) {
+        // Responder con un mensaje de error en caso de fallo en la base de datos
+        header('HTTP/1.1 500 Internal Server Error');
+        echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
+    }
+}
 // Obtener todas las baremaciones por id_convocatoria
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {
+elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {
     $idConvocatoria = intval($_GET['idConvocatoria']);
     try {
         $baremacionesPorConvocatoria = $repositoryBaremacion->obtenerBaremacionesPorConvocatoria($idConvocatoria);
