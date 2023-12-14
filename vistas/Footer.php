@@ -8,9 +8,9 @@
 
 <footer class="footer">
     <div class="footer-links">  
-        <a href="#avisolegal">Aviso Legal</a> | 
-        <a href="#politicacookies">Política de Cookies</a> | 
-        <a href="#politicaprivacidad">Política de Privacidad</a>
+        <a href="?menu=avisolegal">Aviso Legal</a> | 
+        <a href="?menu=politicacookies">Política de Cookies</a> | 
+        <a href="?menu=politicaprivacidad">Política de Privacidad</a>
     </div>
     <p>Becas Erasmus © 2023. Todos los derechos reservados.</p>
     </footer>

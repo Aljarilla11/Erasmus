@@ -59,6 +59,18 @@ if (isset($_GET['menu']))
     {
         require_once './forms/VerSolicitudes.php';
     }
+    if ($_GET['menu'] == "avisolegal") 
+    {
+        require_once './forms/AvisoLegal.php';
+    }
+    if ($_GET['menu'] == "politicacookies") 
+    {
+        require_once './forms/PoliticaCookies.php';
+    }
+    if ($_GET['menu'] == "politicaprivacidad") 
+    {
+        require_once './forms/PoliticaPrivacidad.php';
+    }
 
 
 }
