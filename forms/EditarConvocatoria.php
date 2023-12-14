@@ -112,7 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Confirmar la transacción
         $conexion->commit();
-        
+        header("Location: ?menu=modificarconvocatoria");
+        exit();
         echo "La convocatoria se actualizó correctamente.";
     } catch (PDOException $e) {
         // Revertir la transacción en caso de error
