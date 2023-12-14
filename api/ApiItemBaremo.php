@@ -7,8 +7,18 @@ header('Content-Type: application/json');
 $conexion = "";
 $repositoryItemBaremo = new RepositoryItemBaremo($conexion);
 
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['idConvocatoriaBaremo'])) {
+    $idConvocatoriaBaremo = intval($_GET['idConvocatoriaBaremo']);
+    try {
+        $itemsBaremo = $repositoryItemBaremo->obtenerItemsBaremoPorConvocatoriaBaremo($idConvocatoriaBaremo);
+        echo json_encode($itemsBaremo);
+    } catch (PDOException $e) {
+        header('HTTP/1.1 500 Internal Server Error');
+        echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
+    }
+}
 // Obtener todos los ítems del baremo
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['id'])) {
+elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['id'])) {
     $id = intval($_GET['id']);
     try {
         $itemBaremo = $repositoryItemBaremo->obtenerItemBaremoPorId($id);

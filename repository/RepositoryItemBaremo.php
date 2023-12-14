@@ -40,6 +40,14 @@ class RepositoryItemBaremo
         $stmt->execute();
     }
 
+    public function obtenerItemsBaremoPorConvocatoriaBaremo($idConvocatoriaBaremo) {
+        $sql = "SELECT * FROM item_baremo WHERE id = :idConvocatoriaBaremo";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function eliminarItemBaremoPorId($id)
     {
         $sql = "DELETE FROM item_baremo WHERE id = :id";
