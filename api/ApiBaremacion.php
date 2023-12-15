@@ -1,7 +1,10 @@
 <?php
-
+require 'vendor/autoload.php'; // Asegúrate de tener la ruta correcta al archivo autoload de Composer
 require_once '../repository/Db.php';
 require_once '../repository/RepositoryBaremacion.php';
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 header('Content-Type: application/json');
 $conexion = "";  // Asegúrate de establecer la conexión a la base de datos
@@ -10,7 +13,6 @@ $repositoryBaremacion = new RepositoryBaremacion($conexion);
 // Crear una nueva baremación
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Asegúrate de que la solicitud sea de tipo POST y maneja adecuadamente la subida de archivos
-
     // Obtén los datos del formulario
     $idCandidato = $_POST['idCandidato']; // Ajusta según tu formulario
     $idConvocatoria = $_POST['idConvocatoria']; // Ajusta según tu formulario
@@ -29,6 +31,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('HTTP/1.1 500 Internal Server Error');
         echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
     }
+
+    $html = "<html>
+    <head></head>
+    <body>
+        <h1>Datos de la Solicitud</h1>
+        <p><strong>Nombre:</p>
+        <p><strong>Apellidos:</p>
+        <p><strong>DNI:</p>
+    </body>
+</html>";
+
+// Configurar Dompdf
+$options = new Options();
+$options->set('isHtml5ParserEnabled', true);
+$options->set('isPhpEnabled', true);
+
+// Instanciar Dompdf
+$dompdf = new Dompdf($options);
+
+// Cargar el HTML al Dompdf
+$dompdf->loadHtml($html);
+
+// Establecer el tamaño del papel (puedes ajustarlo según tus necesidades)
+$dompdf->setPaper('A4', 'portrait');
+
+// Renderizar el PDF
+$dompdf->render();
+
+// Mostrar el PDF en el navegador
+$dompdf->stream();
+
 }
 // Obtener todas las baremaciones por id_convocatoria
 elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {
