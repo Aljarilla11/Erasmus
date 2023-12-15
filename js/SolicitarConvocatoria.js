@@ -103,7 +103,7 @@ window.addEventListener("load", function () {
                         method: 'POST',
                         body: formData
                     })
-                        .then(response => response.json())
+                        .then(response => response.text())
                         .then(data => {
                             console.log(data);
                             // Puedes realizar acciones adicionales aquí, como mostrar un mensaje de éxito al usuario

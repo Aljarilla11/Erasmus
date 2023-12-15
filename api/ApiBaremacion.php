@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $idItemBaremo = $_POST['idItemBaremo']; // Ajusta según tu formulario
     $url = $_FILES['url']['name']; // Ajusta según tu formulario y el nombre del campo del archivo
     $rutaCarpeta = __DIR__ . '/Erasmus/pdf/';
-    //move_uploaded_file($_FILES['url']['tmp_name'], "../Erasmus/pdf/".$_FILES['url']['name']);
+    move_uploaded_file($_FILES['url']['tmp_name'], "C:/xampp/htdocs/Erasmus/pdf/".$_FILES['url']['name']);
     try {
         // Crear la baremación en la base de datos
         $repositoryBaremacion->crearBaremacion($idCandidato, $idConvocatoria, $idItemBaremo, $url);
