@@ -45,13 +45,6 @@ else
     echo "<p>Rol no reconocido</p>";
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Procesar los datos del formulario si es necesario
-    
-    // Redirigir a otra página
-    header("Location: ?menu=listarconvocatorias");
-    exit(); 
-}
 
 ?>
 <!DOCTYPE html>
@@ -66,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <h1>Formulario de Solicitud</h1>
 
-    <form action="" method="post">
+    <form action="" id="solicitudForm" method="post">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
 
@@ -87,6 +80,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <label for="fechaNacimiento">Fecha de Nacimiento:</label>
         <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+
+        <div id="contenedorItemBaremos"></div>
 
         <button type="submit">Enviar Solicitud</button>
     </form>

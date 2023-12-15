@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $idCandidato = $_POST['idCandidato']; // Ajusta según tu formulario
     $idConvocatoria = $_POST['idConvocatoria']; // Ajusta según tu formulario
     $idItemBaremo = $_POST['idItemBaremo']; // Ajusta según tu formulario
-    $url = $_FILES['archivo']['name']; // Ajusta según tu formulario y el nombre del campo del archivo
+    //$url = $_FILES['archivo']['name']; // Ajusta según tu formulario y el nombre del campo del archivo
+    $url = $_POST['url'];
 
     try {
         // Crear la baremación en la base de datos

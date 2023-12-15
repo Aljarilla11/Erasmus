@@ -1,12 +1,10 @@
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     var parametros = new URLSearchParams(window.location.search);
     var idCandidato = parametros.get("id");
     var idConvocatoria = parametros.get("idConvocatoria");
 
-    console.log(idConvocatoria)
-
     // Realiza la solicitud para obtener los datos del candidato
-    fetch(`http://erasmusbecas.com/api/ApiCandidatos.php?id=${idCandidato}`)
+    fetch(`http://erasmusbeca.com/api/ApiCandidatos.php?id=${idCandidato}`)
         .then(response => response.json())
         .then(data => {
             // Rellena los campos del formulario con los datos del candidato
@@ -19,47 +17,95 @@ window.addEventListener("load", function() {
             document.getElementById('fechaNacimiento').value = data.fecha_nacimiento;
 
             // Realizar solicitud para obtener los convocatoria_baremo de la convocatoria específica
-            fetch(`http://erasmusbecas.com/api/ApiConvocatoriaBaremo.php?idConvocatoria=${idConvocatoria}`)
+            fetch(`http://erasmusbeca.com/api/ApiConvocatoriaBaremo.php?idConvocatoria=${idConvocatoria}`)
                 .then(response => response.json())
                 .then(convocatoriaBaremos => {
                     // Filtrar los convocatoria_baremo que permiten aportes de alumnos
                     var convocatoriaBaremosAporteAlumno = convocatoriaBaremos.filter(convBaremo => convBaremo.aportalumno);
-                    console.log(convocatoriaBaremos)
-                    console.log(convocatoriaBaremosAporteAlumno)
+
                     // Realizar solicitud para obtener los item_baremos asociados a cada convocatoria_baremo
                     Promise.all(convocatoriaBaremosAporteAlumno.map(convBaremo =>
-                        fetch(`http://erasmusbecas.com/api/ApiItemBaremo.php?idConvocatoriaBaremo=${convBaremo.id_baremo}`)
+                        fetch(`http://erasmusbeca.com/api/ApiItemBaremo.php?idConvocatoriaBaremo=${convBaremo.id_baremo}`)
                             .then(response => response.json())
                     ))
-                    .then(itemBaremos => {
-                        // Crear elementos en el formulario para cada item_baremo
-                        var formulario = document.querySelector('form');
-                        itemBaremos.forEach(itemArray => {
-                            // Acceder al objeto dentro del array
-                            var item = itemArray[0];
+                        .then(itemBaremos => {
+                            // Crear elementos en el formulario para cada item_baremo
+                            var contenedorItemBaremos = document.getElementById('contenedorItemBaremos');
+                            itemBaremos.forEach(itemArray => {
+                                var item = itemArray[0];
 
-                            // Verifica si hay datos y que las propiedades esperadas están presentes
-                            if (item && item.id !== undefined && item.nombre !== undefined) {
-                                // Crear un nuevo elemento de etiqueta <input> o <textarea> según sea necesario
-                                var inputElement = document.createElement('input');
-                                inputElement.type = 'file'; // Configurar como tipo de archivo para la carga de archivos
-                                inputElement.name = 'aportesAlumno[' + item.id + ']'; // Usar el id del item_baremo como nombre del campo
-                                inputElement.placeholder = 'Adjuntar archivo para ' + item.nombre;
+                                if (item && item.id !== undefined && item.nombre !== undefined) {
+                                    var inputElement = document.createElement('input');
+                                    inputElement.type = 'file';
+                                    inputElement.name = 'aportesAlumno[' + item.id + ']';
+                                    inputElement.placeholder = 'Adjuntar archivo para ' + item.nombre;
 
-                                // Crear una etiqueta <label> para describir el campo
-                                var labelElement = document.createElement('label');
-                                labelElement.for = inputElement.name;
-                                labelElement.textContent = item.nombre;
+                                    var labelElement = document.createElement('label');
+                                    labelElement.for = inputElement.name;
+                                    labelElement.textContent = item.nombre;
 
-                                // Agregar elementos al formulario
-                                formulario.appendChild(labelElement);
-                                formulario.appendChild(inputElement);
-                            }
-                        });
-                    })
-                    .catch(error => console.error('Error al obtener datos del item_baremo:', error));
+                                    contenedorItemBaremos.appendChild(labelElement);
+                                    contenedorItemBaremos.appendChild(inputElement);
+                                }
+                            });
+                        })
+                        .catch(error => console.error('Error al obtener datos del item_baremo:', error));
                 })
                 .catch(error => console.error('Error al obtener datos del convocatoria_baremo:', error));
         })
         .catch(error => console.error('Error al obtener datos del candidato:', error));
+
+    // Agregar un evento de escucha para el envío del formulario
+    document.getElementById('solicitudForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Obtener los elementos de archivo
+        var inputElements = document.querySelectorAll('input[type="file"]');
+        
+        // Iterar sobre los elementos de archivo y realizar la solicitud para cada uno
+        inputElements.forEach(function (inputElement) {
+            var idItemBaremo = inputElement.name.replace('aportesAlumno[', '').replace(']', '');
+            var formData = new FormData();
+            
+            formData.append('idCandidato', idCandidato);
+            formData.append('idConvocatoria', idConvocatoria);
+            formData.append('idItemBaremo', idItemBaremo);
+            formData.append('url', 'ruta/del/archivo/' + idItemBaremo + '.pdf'); // Ruta de ejemplo, ajusta según tu lógica
+            formData.append(inputElement.name, inputElement.files[0]);
+
+            // Realizar la solicitud HTTP POST a la API de baremación para cada archivo
+            fetch('http://erasmusbeca.com/api/ApiBaremacion.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Puedes realizar acciones adicionales aquí, como mostrar un mensaje de éxito al usuario
+                })
+                .catch(error => {
+                    console.error('Error al enviar la solicitud:', error);
+                    // Puedes manejar el error de alguna manera (por ejemplo, mostrar un mensaje de error al usuario)
+                });
+        });
+
+        var formData = new FormData();
+                formData.append('idConvocatoria', idConvocatoria);
+                formData.append('idCandidato', idCandidato);
+
+                // Realizar la solicitud HTTP POST para agregar el candidato a la convocatoria
+                fetch('http://erasmusbeca.com/api/ApiCandidatosConvocatoria.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        // Puedes realizar acciones adicionales aquí, como mostrar un mensaje de éxito al usuario
+                    })
+                    .catch(error => {
+                        console.error('Error al enviar la solicitud:', error);
+                        // Puedes manejar el error de alguna manera (por ejemplo, mostrar un mensaje de error al usuario)
+                    });
+    });
 });

@@ -22,6 +22,19 @@ class RepositoryCandidatosConvocatoria
         return $candidatosConvocatoria;
     }
 
+    public function agregarCandidatoConvocatoria($idConvocatoria, $idCandidatos)
+    {
+        try {
+            $query = "INSERT INTO candidatos_convocatoria (id_convocatoria, id_candidatos) VALUES (:idConvocatoria, :idCandidato)";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':idConvocatoria', $idConvocatoria, PDO::PARAM_INT);
+            $statement->bindParam(':idCandidato', $idCandidatos, PDO::PARAM_INT);
+            $statement->execute();
+        } catch (PDOException $e) {
+            throw new Exception('Error al agregar candidato a la convocatoria: ' . $e->getMessage());
+        }
+    }
+
     public function obtenerCandidatosConvocatoriaPorConvocatoria($idConvocatoria)
     {
         $sql = "SELECT * FROM candidatos_convocatoria WHERE id_convocatoria = :idConvocatoria";
