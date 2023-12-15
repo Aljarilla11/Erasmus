@@ -63,18 +63,64 @@ window.addEventListener("load", function () {
         var inputElements = document.querySelectorAll('input[type="file"]');
         
         // Iterar sobre los elementos de archivo y realizar la solicitud para cada uno
+        var isValid = true; // Bandera para verificar la validez de los archivos
+
         inputElements.forEach(function (inputElement) {
             var idItemBaremo = inputElement.name.replace('aportesAlumno[', '').replace(']', '');
-            var formData = new FormData();
-            
-            formData.append('idCandidato', idCandidato);
-            formData.append('idConvocatoria', idConvocatoria);
-            formData.append('idItemBaremo', idItemBaremo);
-            formData.append('url', 'ruta/del/archivo/' + idItemBaremo + '.pdf'); // Ruta de ejemplo, ajusta según tu lógica
-            formData.append(inputElement.name, inputElement.files[0]);
 
-            // Realizar la solicitud HTTP POST a la API de baremación para cada archivo
-            fetch('http://erasmusbeca.com/api/ApiBaremacion.php', {
+            // Verificar si se ha seleccionado un archivo
+            if (inputElement.files.length > 0) {
+                var file = inputElement.files[0];
+
+                // Verificar si el archivo es de tipo PDF
+                if (file.type !== 'application/pdf') {
+                    // Mostrar mensaje de error si el archivo no es PDF
+                    alert('Por favor, seleccione un archivo PDF.');
+                    isValid = false;
+                }
+            }
+        });
+
+        // Si todos los archivos son válidos, proceder con la solicitud de la API de baremación
+        if (isValid) {
+            inputElements.forEach(function (inputElement) {
+                var idItemBaremo = inputElement.name.replace('aportesAlumno[', '').replace(']', '');
+                var formData = new FormData();
+                
+                formData.append('idCandidato', idCandidato);
+                formData.append('idConvocatoria', idConvocatoria);
+                formData.append('idItemBaremo', idItemBaremo);
+
+                // Verificar si se ha seleccionado un archivo
+                if (inputElement.files.length > 0) {
+                    var file = inputElement.files[0];
+
+                    formData.append('url', file);
+                    formData.append(inputElement.name, file);
+
+                    // Realizar la solicitud HTTP POST a la API de baremación
+                    fetch('http://erasmusbeca.com/api/ApiBaremacion.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            // Puedes realizar acciones adicionales aquí, como mostrar un mensaje de éxito al usuario
+                        })
+                        .catch(error => {
+                            console.error('Error al enviar la solicitud:', error);
+                            // Puedes manejar el error de alguna manera (por ejemplo, mostrar un mensaje de error al usuario)
+                        });
+                }
+            });
+
+            // También, realizar la solicitud para agregar el candidato a la convocatoria
+            var formData = new FormData();
+            formData.append('idConvocatoria', idConvocatoria);
+            formData.append('idCandidato', idCandidato);
+
+            fetch('http://erasmusbeca.com/api/ApiCandidatosConvocatoria.php', {
                 method: 'POST',
                 body: formData
             })
@@ -87,25 +133,6 @@ window.addEventListener("load", function () {
                     console.error('Error al enviar la solicitud:', error);
                     // Puedes manejar el error de alguna manera (por ejemplo, mostrar un mensaje de error al usuario)
                 });
-        });
-
-        var formData = new FormData();
-                formData.append('idConvocatoria', idConvocatoria);
-                formData.append('idCandidato', idCandidato);
-
-                // Realizar la solicitud HTTP POST para agregar el candidato a la convocatoria
-                fetch('http://erasmusbeca.com/api/ApiCandidatosConvocatoria.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        // Puedes realizar acciones adicionales aquí, como mostrar un mensaje de éxito al usuario
-                    })
-                    .catch(error => {
-                        console.error('Error al enviar la solicitud:', error);
-                        // Puedes manejar el error de alguna manera (por ejemplo, mostrar un mensaje de error al usuario)
-                    });
+        }
     });
 });
