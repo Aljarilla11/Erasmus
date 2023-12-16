@@ -23,6 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('HTTP/1.1 500 Internal Server Error');
         echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
     }
+}elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idCandidato'])) {
+    $idCandidato = intval($_GET['idCandidato']);
+    try {
+        $idConvocatorias = $repositoryCandidatosConvocatoria->obtenerIdConvocatoriasPorCandidato($idCandidato);
+        echo json_encode($idConvocatorias);
+    } catch (PDOException $e) {
+        header('HTTP/1.1 500 Internal Server Error');
+        echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
+    }
 }
 // Obtener candidatos convocatoria por id_convocatoria
 elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {

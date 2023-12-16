@@ -35,6 +35,20 @@ class ImprimirMenus
 
     public static function imprimirMenuAlumno()
     {
+        $conexion = Db::conectar();
+        $dni = Sesion::leerSesion('usuario');
+
+        $sql = "SELECT id FROM candidatos WHERE dni = :dni";
+        $statement = $conexion->prepare($sql);
+        $statement->bindParam(':dni', $dni, PDO::PARAM_STR);
+        $statement->execute();
+
+        $resultado = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($resultado) {
+            $idCandidato = $resultado['id'];
+            //var_dump($idCandidato);
+        }
         ?>
             <!DOCTYPE html>
 <html>
@@ -49,7 +63,7 @@ class ImprimirMenus
         <a href="?menu=listarconvocatorias">Ver Convocatorias</a>
     </li>
     <li class="submenu">
-        <a href="?menu=versolicitud">Ver Solicitudes Echadas</a>
+    <a href="?menu=versolicitud&idCandidato=<?= $idCandidato ?>">Ver Solicitudes Echadas</a>
     </li>
 </ul>
 
