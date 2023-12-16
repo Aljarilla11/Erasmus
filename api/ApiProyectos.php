@@ -4,7 +4,7 @@ require_once '../repository/Db.php';
 require_once '../repository/RepositoryProyectos.php';
 
 header('Content-Type: application/json');
-$conexion = "";  // Asegúrate de establecer la conexión a la base de datos
+$conexion = ""; 
 $repositoryProyectos = new RepositoryProyectos($conexion);
 
 // Obtener todos los proyectos
@@ -60,8 +60,6 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($_GET['id'])) {
         echo json_encode(['error' => 'Datos incompletos']);
     }
 }
-
-// Método no permitido o acción no reconocida
 else {
     header('HTTP/1.0 405 Method Not Allowed');
     echo json_encode(['error' => 'Método no permitido']);

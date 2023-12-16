@@ -38,7 +38,6 @@ class RepositoryCandidatosConvocatoria
     public function obtenerIdConvocatoriasPorCandidato($idCandidato)
     {
         try {
-            // Aquí asumo que tienes una tabla llamada 'candidatos_convocatoria' con las columnas 'id', 'id_convocatoria', y 'id_candidatos'
             $query = "SELECT id_convocatoria FROM candidatos_convocatoria WHERE id_candidatos = :idCandidato";
             $statement = $this->conexion->prepare($query);
             $statement->bindParam(':idCandidato', $idCandidato, PDO::PARAM_INT);
@@ -46,12 +45,10 @@ class RepositoryCandidatosConvocatoria
 
             $resultados = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-            // Obtener solo los valores de 'id_convocatoria' y devolverlos como un arreglo
             $idConvocatorias = array_column($resultados, 'id_convocatoria');
 
             return $idConvocatorias;
         } catch (PDOException $e) {
-            // Manejar el error, puedes lanzar una excepción personalizada, loguear, etc.
             throw new Exception('Error en la base de datos: ' . $e->getMessage());
         }
     }

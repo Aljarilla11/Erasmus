@@ -8,34 +8,46 @@ $conexion = "";
 $repositoryCandidatos = new RepositoryCandidatos($conexion);
 
 // Obtener todos los candidatos
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) 
+{
     $id = intval($_GET['id']);
-    try {
+    try 
+    {
         $candidato = $repositoryCandidatos->obtenerCandidatoPorId($id);
-        if ($candidato) {
+        if ($candidato) 
+        {
             echo json_encode($candidato);
-        } else {
+        } 
+        else 
+        {
             header('HTTP/1.0 404 Not Found');
             echo json_encode(['error' => 'Candidato no encontrado']);
         }
-    } catch (PDOException $e) {
+    } 
+    catch (PDOException $e) 
+    {
         header('HTTP/1.1 500 Internal Server Error');
         echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
     }
 }
 
 // Obtener todos los candidatos
-elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    try {
+elseif ($_SERVER['REQUEST_METHOD'] == 'GET') 
+{
+    try 
+    {
         $candidatos = $repositoryCandidatos->obtenerCandidatos();
         echo json_encode($candidatos);
-    } catch (PDOException $e) {
+    } 
+    catch (PDOException $e) 
+    {
         header('HTTP/1.1 500 Internal Server Error');
         echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
     }
 }
 // Actualizar un candidato por ID
-elseif ($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($_GET['id'])) {
+elseif ($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($_GET['id'])) 
+{
     $id = intval($_GET['id']);
     $datos_json = file_get_contents('php://input');
     $datos = json_decode($datos_json, true);
@@ -66,7 +78,6 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($_GET['id'])) {
         echo json_encode(['error' => 'Datos incompletos']);
     }
 } else {
-    // Método no permitido o acción no reconocida
     header('HTTP/1.0 405 Method Not Allowed');
     echo json_encode(['error' => 'Método no permitido']);
 }

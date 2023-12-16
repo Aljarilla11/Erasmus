@@ -57,11 +57,14 @@ INNER JOIN proyectos p ON c.id_proyecto = p.id";
 $resultadoConvocatorias = $conexion->query($sqlConvocatorias);
 $convocatorias = $resultadoConvocatorias->fetchAll(PDO::FETCH_ASSOC);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['action'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+{
+    if (isset($_POST['action'])) 
+    {
         $idConvocatoria = $_POST['idConvocatoria'];
 
-        switch ($_POST['action']) {
+        switch ($_POST['action']) 
+        {
             case 'modificar':
                 header("Location: ?menu=editarconvocatoria&idConvoctoria=$idConvocatoria");
                 exit();

@@ -4,7 +4,7 @@ require_once '../repository/Db.php';
 require_once '../repository/RepositoryDestinatariosConvocatoria.php';
 
 header('Content-Type: application/json');
-$conexion = "";  // Asegúrate de establecer la conexión a la base de datos
+$conexion = "";
 $repositoryDestinatariosConvocatoria = new RepositoryDestinatariosConvocatoria($conexion);
 
 // Obtener todos los destinatarios de una convocatoria por su ID
@@ -50,7 +50,6 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 else {
-    // Método no permitido o acción no reconocida
     header('HTTP/1.0 405 Method Not Allowed');
     echo json_encode(['error' => 'Método no permitido']);
 }

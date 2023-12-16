@@ -66,15 +66,19 @@ $resultado = $statement->fetch(PDO::FETCH_ASSOC);
 
 $conexion = null;
 
-if ($resultado) {
+if ($resultado) 
+{
     $idCandidato = $resultado['id'];
-} else {
+} 
+else 
+{
     // No se encontró ningún candidato con el DNI proporcionado
     echo "Candidato no encontrado";
 }
 
 
-if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) {
+if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) 
+{
     // Obtener el ID de convocatoria desde el formulario
     $idConvocatoria = $_POST['idConvocatoria'];
 

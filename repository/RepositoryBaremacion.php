@@ -21,15 +21,11 @@ class RepositoryBaremacion
     }
 
     public function crearBaremacion($idCandidato, $idConvocatoria, $idItemBaremo, $url) {
-        // Aquí debes procesar los datos del formulario y realizar la inserción en la base de datos
-    
-        // Ejemplo de inserción:
         $sql = "INSERT INTO baremacion (id_candidatos, id_convocatoria, id_item_baremo, url,notas) 
                 VALUES (:id_candidatos, :id_convocatoria, :id_item_baremo, :url,null)";
         
         $stmt = $this->conexion->prepare($sql);
     
-        // Ajusta las siguientes líneas según la estructura real de tu base de datos y el formulario
         $stmt->bindParam(':id_candidatos', $idCandidato);
         $stmt->bindParam(':id_convocatoria', $idConvocatoria);
         $stmt->bindParam(':id_item_baremo', $idItemBaremo);
@@ -37,8 +33,7 @@ class RepositoryBaremacion
     
         // Ejecutar la consulta
         $stmt->execute();
-    
-        // Puedes devolver un mensaje de éxito o el ID de la nueva entrada, según tus necesidades
+
         return ['success' => true, 'message' => 'Baremación creada con éxito'];
     }
 

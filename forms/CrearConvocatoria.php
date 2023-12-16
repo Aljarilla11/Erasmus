@@ -84,7 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
         // Obtener el último id insertado
         $idConvocatoria = $conexion->lastInsertId();
 
-        if (isset($_POST['clases'])) {
+        if (isset($_POST['clases'])) 
+        {
             $elementosSeleccionados = $_POST['clases'];
 
             // Iterar sobre los elementos seleccionados y realizar la acción deseada
@@ -98,12 +99,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
         }
 
         // Manejar los elementos del baremo seleccionados
-        if (isset($_POST['elementosBaremo'])) {
+        if (isset($_POST['elementosBaremo'])) 
+        {
             $elementosSeleccionados = $_POST['elementosBaremo'];
 
-            foreach ($elementosSeleccionados as $elementoId) {
+            foreach ($elementosSeleccionados as $elementoId) 
+            {
                 // Verificar si el elemento es de idioma (id = 1)
-                if ($elementoId == 1) {
+                if ($elementoId == 1) 
+                {
                     // Insertar datos en la tabla convocatoria_baremo para elementos que no son de idioma
                     $sqlBaremo = "INSERT INTO convocatoria_baremo (requisito, nota_max, id_baremo, id_convocatoria, valor_minimo, aportalumno)
                                   VALUES (:requisito, :notaMax, :idBaremo, :idConvocatoria, :valorMinimo, :aporteAlumno)";
@@ -140,20 +144,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
                     $idConvocatoriaBaremo = $fila['id'];
                     
 
-                // Verificar si $nivelesIdioma es un array antes de iterar
-                if (is_array($nivelesIdioma)) {
-                
-                    foreach ($nivelesIdioma as $nivel => $valor) {
-                        $idNivelesIdioma = obtenerIdNivelesIdioma($nivel);
-                        
-                        // Insertar datos en convocatoria_baremo_idioma
-                        $statementBaremoIdioma->bindParam(':valor', $valor);
-                        $statementBaremoIdioma->bindParam(':idNivelesIdioma', $idNivelesIdioma);
-                        $statementBaremoIdioma->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo);
-                        $statementBaremoIdioma->execute();
+                    // Verificar si $nivelesIdioma es un array antes de iterar
+                    if (is_array($nivelesIdioma)) 
+                    {
+                    
+                        foreach ($nivelesIdioma as $nivel => $valor) 
+                        {
+                            $idNivelesIdioma = obtenerIdNivelesIdioma($nivel);
+                            
+                            // Insertar datos en convocatoria_baremo_idioma
+                            $statementBaremoIdioma->bindParam(':valor', $valor);
+                            $statementBaremoIdioma->bindParam(':idNivelesIdioma', $idNivelesIdioma);
+                            $statementBaremoIdioma->bindParam(':idConvocatoriaBaremo', $idConvocatoriaBaremo);
+                            $statementBaremoIdioma->execute();
+                        }
                     }
-                }
-                } else {
+                } 
+                else 
+                {
                     // Insertar datos en la tabla convocatoria_baremo para elementos que no son de idioma
                     $sqlBaremo = "INSERT INTO convocatoria_baremo (requisito, nota_max, id_baremo, id_convocatoria, valor_minimo, aportalumno)
                                   VALUES (:requisito, :notaMax, :idBaremo, :idConvocatoria, :valorMinimo, :aporteAlumno)";

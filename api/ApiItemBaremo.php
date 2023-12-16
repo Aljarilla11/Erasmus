@@ -41,7 +41,6 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['id'])) {
         echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
     }
 } else {
-    // Método no permitido o acción no reconocida
     header('HTTP/1.0 405 Method Not Allowed');
     echo json_encode(['error' => 'Método no permitido']);
 }

@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php'; // Asegúrate de tener la ruta correcta al archivo autoload de Composer
+require 'vendor/autoload.php';
 require_once '../repository/Db.php';
 require_once '../repository/RepositoryBaremacion.php';
 
@@ -7,26 +7,28 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 header('Content-Type: application/json');
-$conexion = "";  // Asegúrate de establecer la conexión a la base de datos
+$conexion = "";
 $repositoryBaremacion = new RepositoryBaremacion($conexion);
 
 // Crear una nueva baremación
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Asegúrate de que la solicitud sea de tipo POST y maneja adecuadamente la subida de archivos
-    // Obtén los datos del formulario
-    $idCandidato = $_POST['idCandidato']; // Ajusta según tu formulario
-    $idConvocatoria = $_POST['idConvocatoria']; // Ajusta según tu formulario
-    $idItemBaremo = $_POST['idItemBaremo']; // Ajusta según tu formulario
-    $url = $_FILES['url']['name']; // Ajusta según tu formulario y el nombre del campo del archivo
+if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+{
+    $idCandidato = $_POST['idCandidato'];
+    $idConvocatoria = $_POST['idConvocatoria']; 
+    $idItemBaremo = $_POST['idItemBaremo'];
+    $url = $_FILES['url']['name'];
     $rutaCarpeta = __DIR__ . '/Erasmus/pdf/';
     move_uploaded_file($_FILES['url']['tmp_name'], "C:/xampp/htdocs/Erasmus/pdf/".$_FILES['url']['name']);
-    try {
+    try 
+    {
         // Crear la baremación en la base de datos
         $repositoryBaremacion->crearBaremacion($idCandidato, $idConvocatoria, $idItemBaremo, $url);
 
         // Responder con un mensaje de éxito o cualquier otra información necesaria
         echo json_encode(['success' => true, 'message' => 'Baremación creada con éxito']);
-    } catch (PDOException $e) {
+    } 
+    catch (PDOException $e)
+    {
         // Responder con un mensaje de error en caso de fallo en la base de datos
         header('HTTP/1.1 500 Internal Server Error');
         echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
@@ -64,7 +66,8 @@ $dompdf->stream();
 
 }
 // Obtener todas las baremaciones por id_convocatoria
-elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {
+elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) 
+{
     $idConvocatoria = intval($_GET['idConvocatoria']);
     try {
         $baremacionesPorConvocatoria = $repositoryBaremacion->obtenerBaremacionesPorConvocatoria($idConvocatoria);
@@ -75,7 +78,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {
     }
 }
 // Obtener baremación por ID
-elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
+elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) 
+{
     $id = intval($_GET['id']);
     try {
         $baremacion = $repositoryBaremacion->obtenerBaremacionPorId($id);
@@ -91,7 +95,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
     }
 }
 // Obtener todas las baremaciones
-elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
+elseif ($_SERVER['REQUEST_METHOD'] == 'GET') 
+{
     try {
         $baremaciones = $repositoryBaremacion->obtenerTodasBaremaciones();
         echo json_encode($baremaciones);
@@ -101,8 +106,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 }
 
-// Método no permitido o acción no reconocida
-else {
+else 
+{
     header('HTTP/1.0 405 Method Not Allowed');
     echo json_encode(['error' => 'Método no permitido']);
 }

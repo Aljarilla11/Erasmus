@@ -72,7 +72,8 @@ $stmtDestinatariosConvocatoria->execute();
 $destinatariosSeleccionados = $stmtDestinatariosConvocatoria->fetchAll(PDO::FETCH_COLUMN);
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+{
     // Realizar las validaciones necesarias
 
     // Obtener los datos del formulario
@@ -90,7 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Iniciar la transacción
     $conexion->beginTransaction();
 
-    try {
+    try 
+    {
         // Actualizar la tabla convocatorias
         $sqlUpdateConvocatoria = "UPDATE convocatorias SET movilidades = :movilidad, id_proyecto = :idProyecto, tipo = :tipo, 
             fecha_inicio = :fechaInicio, fecha_fin = :fechaFin, fecha_inicio_pruebas = :fechaInicioProvisional, 
@@ -115,26 +117,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ?menu=modificarconvocatoria");
         exit();
         echo "La convocatoria se actualizó correctamente.";
-    } catch (PDOException $e) {
+    } 
+    catch (PDOException $e) 
+    {
         // Revertir la transacción en caso de error
         $conexion->rollBack();
         echo "Error al actualizar la convocatoria: " . $e->getMessage();
     }
     $sqlDeleteDestinatarios = "DELETE FROM destinatarios_convocatoria WHERE id_convocatoria = :idConvocatoria";
-$stmtDeleteDestinatarios = $conexion->prepare($sqlDeleteDestinatarios);
-$stmtDeleteDestinatarios->bindParam(':idConvocatoria', $idConvocatoria);
-$stmtDeleteDestinatarios->execute();
+    $stmtDeleteDestinatarios = $conexion->prepare($sqlDeleteDestinatarios);
+    $stmtDeleteDestinatarios->bindParam(':idConvocatoria', $idConvocatoria);
+    $stmtDeleteDestinatarios->execute();
 
-// Insertar los destinatarios seleccionados en el formulario
-if (isset($_POST['destinatarios']) && is_array($_POST['destinatarios'])) {
-    foreach ($_POST['destinatarios'] as $codGrupo) {
-        $sqlInsertDestinatario = "INSERT INTO destinatarios_convocatoria (id_convocatoria, id_destinatario) VALUES (:idConvocatoria, :idDestinatario)";
-        $stmtInsertDestinatario = $conexion->prepare($sqlInsertDestinatario);
-        $stmtInsertDestinatario->bindParam(':idConvocatoria', $idConvocatoria);
-        $stmtInsertDestinatario->bindParam(':idDestinatario', $codGrupo);
-        $stmtInsertDestinatario->execute();
+    // Insertar los destinatarios seleccionados en el formulario
+    if (isset($_POST['destinatarios']) && is_array($_POST['destinatarios'])) 
+    {
+        foreach ($_POST['destinatarios'] as $codGrupo) {
+            $sqlInsertDestinatario = "INSERT INTO destinatarios_convocatoria (id_convocatoria, id_destinatario) VALUES (:idConvocatoria, :idDestinatario)";
+            $stmtInsertDestinatario = $conexion->prepare($sqlInsertDestinatario);
+            $stmtInsertDestinatario->bindParam(':idConvocatoria', $idConvocatoria);
+            $stmtInsertDestinatario->bindParam(':idDestinatario', $codGrupo);
+            $stmtInsertDestinatario->execute();
+        }
     }
-}
 }
 
 // Cerrar la conexión
