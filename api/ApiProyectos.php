@@ -6,8 +6,6 @@ require_once '../repository/RepositoryProyectos.php';
 header('Content-Type: application/json');
 $conexion = ""; 
 $repositoryProyectos = new RepositoryProyectos($conexion);
-if (estaLogeado()) 
-{
     // Obtener todos los proyectos
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         try {
@@ -60,5 +58,4 @@ if (estaLogeado())
     else {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
 ?>

@@ -6,8 +6,6 @@ require_once '../repository/RepositoryItemBaremo.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryItemBaremo = new RepositoryItemBaremo($conexion);
-if (estaLogeado()) 
-{
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['idConvocatoriaBaremo'])) {
         $idConvocatoriaBaremo = intval($_GET['idConvocatoriaBaremo']);
         try {
@@ -40,5 +38,4 @@ if (estaLogeado())
     } else {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
 ?>

@@ -6,8 +6,7 @@ require_once '../repository/RepositoryCandidatosConvocatoria.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryCandidatosConvocatoria = new RepositoryCandidatosConvocatoria($conexion);
-if (estaLogeado()) 
-{
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Obtener datos del formulario
         $idConvocatoria = $_POST['idConvocatoria']; 
@@ -51,5 +50,5 @@ if (estaLogeado())
     else {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
+
 ?>

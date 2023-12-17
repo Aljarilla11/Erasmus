@@ -6,8 +6,6 @@ require_once '../repository/RepositoryConvocatoriaBaremoIdioma.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryConvocatoriaBaremoIdioma = new RepositoryConvocatoriaBaremoIdiomas($conexion);
-if (estaLogeado()) 
-{
     // Obtener todos los elementos del baremo idioma de una convocatoria específica
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoriaBaremo'])) {
         $idConvocatoriaBaremo = intval($_GET['idConvocatoriaBaremo']);
@@ -37,5 +35,4 @@ if (estaLogeado())
     else {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
 ?>

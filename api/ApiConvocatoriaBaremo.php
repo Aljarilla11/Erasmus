@@ -6,8 +6,6 @@ require_once '../repository/RepositoryConvocatoriaBaremo.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryConvocatoriaBaremo = new RepositoryConvocatoriaBaremo($conexion);
-if (estaLogeado()) 
-{
     // Obtener todos los elementos del baremo de una convocatoria
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {
         $idConvocatoria = intval($_GET['idConvocatoria']);
@@ -37,5 +35,4 @@ if (estaLogeado())
     else {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
 ?>

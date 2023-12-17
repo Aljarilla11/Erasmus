@@ -6,8 +6,6 @@ require_once '../repository/RepositoryNivelesIdioma.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryNivelesIdioma = new RepositoryNivelesIdioma($conexion);
-if (estaLogeado()) 
-{
     // Obtener todos los niveles de idioma
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['id'])) {
         $id = intval($_GET['id']);
@@ -31,5 +29,4 @@ if (estaLogeado())
     } else {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
 ?>

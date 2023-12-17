@@ -12,8 +12,6 @@ $conexion = "";
 $repositoryBaremacion = new RepositoryBaremacion($conexion);
 $repositoryCandidatos = new RepositoryCandidatos($conexion);
 
-if (estaLogeado()) 
-{
     // Crear una nueva baremación
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $idCandidato = $_POST['idCandidato'];
@@ -101,5 +99,5 @@ if (estaLogeado())
     {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
+
 ?>

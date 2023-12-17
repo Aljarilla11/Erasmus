@@ -6,8 +6,7 @@ require_once '../repository/RepositoryConvocatorias.php';
 header('Content-Type: application/json');
 $conexion = ""; 
 $repositoryConvocatorias = new RepositoryConvocatoria($conexion);
-if (estaLogeado()) 
-{
+
     // Obtener una convocatoria por ID
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
         $id = intval($_GET['id']);
@@ -73,5 +72,5 @@ if (estaLogeado())
     else {     
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
+
 ?>

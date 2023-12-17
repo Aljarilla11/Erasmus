@@ -6,8 +6,7 @@ require_once '../repository/RepositoryCandidatos.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryCandidatos = new RepositoryCandidatos($conexion);
-if (estaLogeado()) 
-{
+
     // Obtener todos los candidatos
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) 
     {
@@ -76,5 +75,5 @@ if (estaLogeado())
     } else {
         echo json_encode(['error' => 'Método no permitido']);
     }
-}
+
 ?>
