@@ -1,4 +1,5 @@
 window.addEventListener("load", function () {
+    // Obtiene los parámetros 'idCandidato' e 'idConvocatoria' de la URL
     var parametros = new URLSearchParams(window.location.search);
     var idCandidato = parametros.get("id");
     var idConvocatoria = parametros.get("idConvocatoria");
@@ -63,7 +64,7 @@ window.addEventListener("load", function () {
         var inputElements = document.querySelectorAll('input[type="file"]');
         
         // Iterar sobre los elementos de archivo y realizar la solicitud para cada uno
-        var isValid = true; // Bandera para verificar la validez de los archivos
+        var isValid = true; //verificar la validez de los archivos
 
         inputElements.forEach(function (inputElement) {
             var idItemBaremo = inputElement.name.replace('aportesAlumno[', '').replace(']', '');
@@ -106,11 +107,9 @@ window.addEventListener("load", function () {
                         .then(response => response.text())
                         .then(data => {
                             console.log(data);
-                            // Puedes realizar acciones adicionales aquí, como mostrar un mensaje de éxito al usuario
                         })
                         .catch(error => {
                             console.error('Error al enviar la solicitud:', error);
-                            // Puedes manejar el error de alguna manera (por ejemplo, mostrar un mensaje de error al usuario)
                         });
                 }
             });
@@ -127,11 +126,9 @@ window.addEventListener("load", function () {
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    // Puedes realizar acciones adicionales aquí, como mostrar un mensaje de éxito al usuario
                 })
                 .catch(error => {
                     console.error('Error al enviar la solicitud:', error);
-                    // Puedes manejar el error de alguna manera (por ejemplo, mostrar un mensaje de error al usuario)
                 });
         }
     });
