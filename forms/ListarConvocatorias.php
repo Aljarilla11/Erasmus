@@ -1,15 +1,12 @@
 <?php
 try 
 {
-    // Consulta preparada para obtener el rol del usuario por su nombre
     $conexion = Db::conectar();
     $query = "SELECT rol FROM candidatos WHERE dni = :dni";
     $statement = $conexion->prepare($query);
 
     $statement->bindParam(':dni', $_SESSION['usuario'], PDO::PARAM_STR);
     $statement->execute();
-
-    // Obtener el resultado de la consulta
     $resultado = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($resultado) 
@@ -18,18 +15,15 @@ try
     } 
     else
     {
-        $rolUsuario = 'sinRol'; // Establece un valor predeterminado si el usuario no tiene un rol
+        $rolUsuario = 'sinRol';
     }
 } 
 catch (PDOException $e) 
 {
-    // Manejar errores de conexión o consultas
     $rolUsuario = 'sinRol';
 }
 
 
-
-// Lógica para determinar qué mostrar según el rol
 if ($rolUsuario == 'admin') 
 {
     ImprimirMenus::imprimirMenuAdmin();
@@ -46,7 +40,7 @@ else
 }
 
 $conexion = Db::conectar();
-$fechaActual = date('Y-m-d'); // Obtener la fecha actual en el formato YYYY-MM-DD
+$fechaActual = date('Y-m-d');
 
 $sqlConvocatorias = "SELECT c.id, c.movilidades, c.tipo, c.fecha_inicio, c.fecha_fin, c.fecha_inicio_pruebas, c.fecha_fin_pruebas, c.fecha_inicio_definitiva, p.nombre as nombre_proyecto
                     FROM convocatorias c
@@ -76,19 +70,13 @@ if ($resultado)
 } 
 else 
 {
-    // No se encontró ningún candidato con el DNI proporcionado
     echo "Candidato no encontrado";
 }
 
 
 if (isset($_POST['idConvocatoria']) && is_numeric($_POST['idConvocatoria'])) 
 {
-    // Obtener el ID de convocatoria desde el formulario
     $idConvocatoria = $_POST['idConvocatoria'];
-
-    // Aquí puedes realizar cualquier lógica adicional para manejar la solicitud según tus necesidades
-
-    // Redireccionar a la nueva página "Solicitud" con un encabezado personalizado
     header("Location: ?menu=solicitarconvocatoria&idConvocatoria=$idConvocatoria&id=$idCandidato");
     exit();
 }

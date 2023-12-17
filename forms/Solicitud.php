@@ -1,15 +1,12 @@
 <?php
 try 
 {
-    // Consulta preparada para obtener el rol del usuario por su nombre
     $conexion = Db::conectar();
     $query = "SELECT rol FROM candidatos WHERE dni = :dni";
     $statement = $conexion->prepare($query);
 
     $statement->bindParam(':dni', $_SESSION['usuario'], PDO::PARAM_STR);
     $statement->execute();
-
-    // Obtener el resultado de la consulta
     $resultado = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($resultado) 
@@ -18,18 +15,15 @@ try
     } 
     else
     {
-        $rolUsuario = 'sinRol'; // Establece un valor predeterminado si el usuario no tiene un rol
+        $rolUsuario = 'sinRol';
     }
 } 
 catch (PDOException $e) 
 {
-    // Manejar errores de conexión o consultas
     $rolUsuario = 'sinRol';
 }
 
 
-
-// Lógica para determinar qué mostrar según el rol
 if ($rolUsuario == 'admin') 
 {
     ImprimirMenus::imprimirMenuAdmin();

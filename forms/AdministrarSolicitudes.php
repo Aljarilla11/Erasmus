@@ -1,7 +1,6 @@
 <?php
 try 
 {
-    // Consulta preparada para obtener el rol del usuario por su nombre
     $conexion = Db::conectar();
     $query = "SELECT rol FROM candidatos WHERE dni = :dni";
     $statement = $conexion->prepare($query);
@@ -23,13 +22,10 @@ try
 } 
 catch (PDOException $e) 
 {
-    // Manejar errores de conexión o consultas
     $rolUsuario = 'sinRol';
 }
 
 
-
-// Lógica para determinar qué mostrar según el rol
 if ($rolUsuario == 'admin') 
 {
     ImprimirMenus::imprimirMenuAdmin();
@@ -46,12 +42,7 @@ else
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['calificar'])) {
-    // Procesar los datos del formulario y cualquier otra lógica necesaria
-
-    // Obtener el ID de la convocatoria
     $idConvocatoria = $_POST['idConvocatoria'];
-
-    // Redireccionar a la página de calificación con el ID de la convocatoria
     header("Location: ?menu=calificar&idConvocatoria=$idConvocatoria");
     exit();
 }

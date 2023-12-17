@@ -2,7 +2,6 @@
 
 try 
 {
-    // Consulta preparada para obtener el rol del usuario por su nombre
     $conexion = Db::conectar();
     $query = "SELECT rol FROM candidatos WHERE dni = :dni";
     $statement = $conexion->prepare($query);
@@ -10,7 +9,6 @@ try
     $statement->bindParam(':dni', $_SESSION['usuario'], PDO::PARAM_STR);
     $statement->execute();
 
-    // Obtener el resultado de la consulta
     $resultado = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($resultado) 
@@ -19,18 +17,15 @@ try
     } 
     else
     {
-        $rolUsuario = 'sinRol'; // Establece un valor predeterminado si el usuario no tiene un rol
+        $rolUsuario = 'sinRol';
     }
 } 
 catch (PDOException $e) 
 {
-    // Manejar errores de conexión o consultas
     $rolUsuario = 'sinRol';
 }
 
 
-
-// Lógica para determinar qué mostrar según el rol
 if ($rolUsuario == 'admin') 
 {
     ImprimirMenus::imprimirMenuAdmin();
@@ -55,7 +50,6 @@ $stmt->execute();
 $convocatoria = $stmt->fetch(PDO::FETCH_ASSOC);
 $idProyectoSeleccionado = $convocatoria['id_proyecto'];
 
-// Obtener todos los proyectos disponibles
 $queryProyectos = "SELECT * FROM proyectos";
 $stmtProyectos = $conexion->prepare($queryProyectos);
 $stmtProyectos->execute();
@@ -74,7 +68,6 @@ $destinatariosSeleccionados = $stmtDestinatariosConvocatoria->fetchAll(PDO::FETC
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') 
 {
-    // Realizar las validaciones necesarias
 
     // Obtener los datos del formulario
     $movilidad = $_POST['movilidad'];
@@ -87,8 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $fechaInicioDefinitiva = $_POST['fechaInicioDefinitiva'];
 
     $conexion = Db::conectar();
-    
-    // Iniciar la transacción
     $conexion->beginTransaction();
 
     try 
@@ -108,11 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         $stmtUpdateConvocatoria->bindParam(':fechaInicioDefinitiva', $fechaInicioDefinitiva);
         $stmtUpdateConvocatoria->bindParam(':idConvocatoria', $idConvocatoria);
         $stmtUpdateConvocatoria->execute();
-        
-
-        // Realizar las acciones necesarias para guardar en otras tablas (destinatarios, etc.)
-
-        // Confirmar la transacción
         $conexion->commit();
         header("Location: ?menu=modificarconvocatoria");
         exit();
@@ -120,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     } 
     catch (PDOException $e) 
     {
-        // Revertir la transacción en caso de error
         $conexion->rollBack();
         echo "Error al actualizar la convocatoria: " . $e->getMessage();
     }
@@ -142,7 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     }
 }
 
-// Cerrar la conexión
 $conexion = null;
 ?>
 

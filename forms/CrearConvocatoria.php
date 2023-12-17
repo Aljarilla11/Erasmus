@@ -2,7 +2,6 @@
 
 try 
 {
-    // Consulta preparada para obtener el rol del usuario por su nombre
     $conexion = Db::conectar();
     $query = "SELECT rol FROM candidatos WHERE dni = :dni";
     $statement = $conexion->prepare($query);
@@ -10,7 +9,6 @@ try
     $statement->bindParam(':dni', $_SESSION['usuario'], PDO::PARAM_STR);
     $statement->execute();
 
-    // Obtener el resultado de la consulta
     $resultado = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($resultado) 
@@ -19,18 +17,14 @@ try
     } 
     else
     {
-        $rolUsuario = 'sinRol'; // Establece un valor predeterminado si el usuario no tiene un rol
+        $rolUsuario = 'sinRol';
     }
 } 
 catch (PDOException $e) 
 {
-    // Manejar errores de conexión o consultas
     $rolUsuario = 'sinRol';
 }
 
-
-
-// Lógica para determinar qué mostrar según el rol
 if ($rolUsuario == 'admin') 
 {
     ImprimirMenus::imprimirMenuAdmin();
@@ -184,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
                 }
             }
     }
-    
+
     } 
     else 
     {
@@ -197,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 
 function obtenerIdNivelesIdioma($nivel) 
 {
-    $conexion = Db::conectar(); // Asegúrate de tener una función Db::conectar() que devuelva una conexión PDO válida
+    $conexion = Db::conectar();
 
     // Consulta para obtener el ID del nivel de idioma según el nombre
     $sql = "SELECT id FROM niveles_idioma WHERE niveles = :nivel";
