@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
                 }
             }
     }
-        echo "Convocatoria creada exitosamente";
+    
     } 
     else 
     {

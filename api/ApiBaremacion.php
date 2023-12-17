@@ -2,6 +2,7 @@
 require 'vendor/autoload.php';
 require_once '../repository/Db.php';
 require_once '../repository/RepositoryBaremacion.php';
+require_once '../repository/RepositoryCandidatos.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -9,38 +10,46 @@ use Dompdf\Options;
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryBaremacion = new RepositoryBaremacion($conexion);
+$repositoryCandidatos = new RepositoryCandidatos($conexion);
+
 
 // Crear una nueva baremación
-if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-{
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $idCandidato = $_POST['idCandidato'];
     $idConvocatoria = $_POST['idConvocatoria']; 
     $idItemBaremo = $_POST['idItemBaremo'];
     $url = $_FILES['url']['name'];
-    $rutaCarpeta = __DIR__ . '/Erasmus/pdf/';
-    move_uploaded_file($_FILES['url']['tmp_name'], "C:/xampp/htdocs/Erasmus/pdf/".$_FILES['url']['name']);
-    try 
-    {
+
+    // Obtener los datos del candidato según su idCandidato
+    $datosCandidato = $repositoryCandidatos->obtenerCandidatoPorId($idCandidato);
+
+    if (!$datosCandidato) {
+        header('HTTP/1.1 500 Internal Server Error');
+        echo json_encode(['error' => 'Error al obtener datos del candidato']);
+        exit();
+    }
+
+    try {
         // Crear la baremación en la base de datos
         $repositoryBaremacion->crearBaremacion($idCandidato, $idConvocatoria, $idItemBaremo, $url);
 
         // Responder con un mensaje de éxito o cualquier otra información necesaria
         echo json_encode(['success' => true, 'message' => 'Baremación creada con éxito']);
-    } 
-    catch (PDOException $e)
-    {
+    } catch (PDOException $e) {
         // Responder con un mensaje de error en caso de fallo en la base de datos
         header('HTTP/1.1 500 Internal Server Error');
         echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
+        exit();
     }
 
+    // Configurar el HTML del PDF con los datos del candidato
     $html = "<html>
     <head></head>
     <body>
         <h1>Datos de la Solicitud</h1>
-        <p><strong>Nombre:</p>
-        <p><strong>Apellidos:</p>
-        <p><strong>DNI:</p>
+        <p><strong>Nombre:</strong> {$datosCandidato['nombre']}</p>
+        <p><strong>Apellidos:</strong> {$datosCandidato['apellidos']}</p>
+        <p><strong>DNI:</strong> {$datosCandidato['dni']}</p>
     </body>
 </html>";
 

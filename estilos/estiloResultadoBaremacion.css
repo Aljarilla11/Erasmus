@@ -1,0 +1,43 @@
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.resultadoBaremacion {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+iframe {
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+form {
+    margin-top: 10px;
+}
+
+input[type="text"] {
+    padding: 5px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: #ccc;
+    margin: 10px 0;
+}

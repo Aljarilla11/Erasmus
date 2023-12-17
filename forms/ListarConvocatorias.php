@@ -45,14 +45,18 @@ else
     echo "<p>Rol no reconocido</p>";
 }
 
-// Obtener convocatorias desde la base de datos
 $conexion = Db::conectar();
+$fechaActual = date('Y-m-d'); // Obtener la fecha actual en el formato YYYY-MM-DD
+
 $sqlConvocatorias = "SELECT c.id, c.movilidades, c.tipo, c.fecha_inicio, c.fecha_fin, c.fecha_inicio_pruebas, c.fecha_fin_pruebas, c.fecha_inicio_definitiva, p.nombre as nombre_proyecto
                     FROM convocatorias c
-                    INNER JOIN proyectos p ON c.id_proyecto = p.id";
+                    INNER JOIN proyectos p ON c.id_proyecto = p.id
+                    WHERE c.fecha_fin > :fechaActual";
 
-$resultadoConvocatorias = $conexion->query($sqlConvocatorias);
-$convocatorias = $resultadoConvocatorias->fetchAll(PDO::FETCH_ASSOC);
+$statementConvocatorias = $conexion->prepare($sqlConvocatorias);
+$statementConvocatorias->bindParam(':fechaActual', $fechaActual, PDO::PARAM_STR);
+$statementConvocatorias->execute();
+$convocatorias = $statementConvocatorias->fetchAll(PDO::FETCH_ASSOC);
 
 
 $dni = Sesion::leerSesion('usuario');

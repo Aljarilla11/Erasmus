@@ -20,7 +20,7 @@ class ImprimirMenus
                 <a href="?menu=modificarconvocatoria">Modificar Convocatoria</a>
             </li>
             <li class="submenu">
-                <a href="?menu=adminuser">Administrar Solicitudes</a>
+                <a href="?menu=administrarsolicitud">Administrar Solicitudes</a>
             </li>
         </ul>
         <?php

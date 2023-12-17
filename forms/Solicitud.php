@@ -45,7 +45,11 @@ else
     echo "<p>Rol no reconocido</p>";
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    header("Location: ?menu=listarconvocatorias");
+    exit();
+}
 
 
 ?>

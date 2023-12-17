@@ -71,6 +71,18 @@ if (isset($_GET['menu']))
     {
         require_once './forms/PoliticaPrivacidad.php';
     }
+    if ($_GET['menu'] == "administrarsolicitud") 
+    {
+        require_once './forms/AdministrarSolicitudes.php';
+    }
+    if ($_GET['menu'] == "calificar") 
+    {
+        require_once './forms/Calificar.php';
+    }
+    if ($_GET['menu'] == "pdf") 
+    {
+        require_once 'C:/xampp/htdocs/Erasmus/pdf/';
+    }
 
 
 }
