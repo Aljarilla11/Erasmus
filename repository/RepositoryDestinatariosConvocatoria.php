@@ -47,8 +47,6 @@ class RepositoryDestinatariosConvocatoria
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindParam(':id_convocatoria', $idConvocatoria, PDO::PARAM_INT);
         $stmt->execute();
-
-        // Devolver todos los registros como un array asociativo
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
