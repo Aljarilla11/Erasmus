@@ -6,6 +6,7 @@ require_once '../repository/RepositoryDestinatariosConvocatoria.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryDestinatariosConvocatoria = new RepositoryDestinatariosConvocatoria($conexion);
+if(funcionesLogin::estaLogeado()){
     // Obtener todos los destinatarios de una convocatoria por su ID
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['idConvocatoria'])) {
         $idConvocatoria = intval($_GET['idConvocatoria']);
@@ -47,4 +48,5 @@ $repositoryDestinatariosConvocatoria = new RepositoryDestinatariosConvocatoria($
     else {
         echo json_encode(['error' => 'Método no permitido']);
     }
+}
 ?>

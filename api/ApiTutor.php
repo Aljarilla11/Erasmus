@@ -6,7 +6,8 @@ require_once '../repository/RepositoryTutor.php';
 header('Content-Type: application/json');
 $conexion = "";
 $repositoryTutor = new RepositoryTutor($conexion);
-    // Obtener todos los tutores
+if(funcionesLogin::estaLogeado()){
+     // Obtener todos los tutores
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         try {
             $tutores = $repositoryTutor->obtenerTodosTutores();
@@ -59,4 +60,5 @@ $repositoryTutor = new RepositoryTutor($conexion);
     else {
         echo json_encode(['error' => 'Método no permitido']);
     }
+}
 ?>

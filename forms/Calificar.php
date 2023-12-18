@@ -84,9 +84,8 @@ $resultadosBaremacion = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     <?php foreach ($resultadosBaremacion as $resultado): ?>
         <div class="resultadoBaremacion">
-            <h2>ID: <?php echo $resultado['id']; ?></h2>
+            <h2>URL:</strong> <?php echo $resultado['url']; ?></h2>
             <p><strong>Notas:</strong> <?php echo $resultado['notas']; ?></p>
-            <p><strong>URL:</strong> <?php echo $resultado['url']; ?></p>
             <!--<iframe src="C:\xampp\htdocs\Erasmus\pdf<?php //echo urlencode($resultado['url']); ?>" width="600" height="400"></iframe>-->
             <iframe src="?menu=pdf<?php echo urlencode($resultado['url']); ?>" width="600" height="400"></iframe>
             <form action="" method="post">

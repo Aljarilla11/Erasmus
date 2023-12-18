@@ -6,6 +6,8 @@ require_once '../repository/RepositoryDestinatarios.php';
 header('Content-Type: application/json');
 $conexion = ""; 
 $repositoryDestinatarios = new RepositoryDestinatarios($conexion);
+
+if(funcionesLogin::estaLogeado()){
     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
         $id = $_GET['id'];
         try {
@@ -31,4 +33,5 @@ $repositoryDestinatarios = new RepositoryDestinatarios($conexion);
     else {
         echo json_encode(['error' => 'Método no permitido']);
     }
+}
 ?>
