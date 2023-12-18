@@ -5,7 +5,7 @@ window.addEventListener("load", function () {
     var idCandidato = parametros.get("idCandidato");
 
     // Hace una solicitud a la API para obtener los idConvocatoria asociados al candidato
-    fetch(`http://erasmusbecas.com/api/ApiCandidatosConvocatoria.php?idCandidato=${idCandidato}`)
+    fetch(`http://erasmusbeca.com/api/ApiCandidatosConvocatoria.php?idCandidato=${idCandidato}`)
         .then(response => response.json())
         .then(data => {
 
@@ -17,7 +17,7 @@ window.addEventListener("load", function () {
 
             // Itera sobre los idConvocatorias y hace solicitudes para obtener detalles de cada convocatoria
             idConvocatoriasArray.forEach(idConvocatoria => {
-                fetch(`http://erasmusbecas.com/api/ApiConvocatoria.php?id=${idConvocatoria}`)
+                fetch(`http://erasmusbeca.com/api/ApiConvocatoria.php?id=${idConvocatoria}`)
                     .then(response => response.json())
                     .then(convocatoriaData => {
 

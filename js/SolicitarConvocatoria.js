@@ -5,7 +5,7 @@ window.addEventListener("load", function () {
     var idConvocatoria = parametros.get("idConvocatoria");
 
     // Realiza la solicitud para obtener los datos del candidato
-    fetch(`http://erasmusbecas.com/api/ApiCandidatos.php?id=${idCandidato}`)
+    fetch(`http://erasmusbeca.com/api/ApiCandidatos.php?id=${idCandidato}`)
         .then(response => response.json())
         .then(data => {
             // Rellena los campos del formulario con los datos del candidato
@@ -18,7 +18,7 @@ window.addEventListener("load", function () {
             document.getElementById('fechaNacimiento').value = data.fecha_nacimiento;
 
             // Realizar solicitud para obtener los convocatoria_baremo de la convocatoria específica
-            fetch(`http://erasmusbecas.com/api/ApiConvocatoriaBaremo.php?idConvocatoria=${idConvocatoria}`)
+            fetch(`http://erasmusbeca.com/api/ApiConvocatoriaBaremo.php?idConvocatoria=${idConvocatoria}`)
                 .then(response => response.json())
                 .then(convocatoriaBaremos => {
                     // Filtrar los convocatoria_baremo que permiten aportes de alumnos
@@ -26,7 +26,7 @@ window.addEventListener("load", function () {
 
                     // Realizar solicitud para obtener los item_baremos asociados a cada convocatoria_baremo
                     Promise.all(convocatoriaBaremosAporteAlumno.map(convBaremo =>
-                        fetch(`http://erasmusbecas.com/api/ApiItemBaremo.php?idConvocatoriaBaremo=${convBaremo.id_baremo}`)
+                        fetch(`http://erasmusbeca.com/api/ApiItemBaremo.php?idConvocatoriaBaremo=${convBaremo.id_baremo}`)
                             .then(response => response.json())
                     ))
                         .then(itemBaremos => {
@@ -100,7 +100,7 @@ window.addEventListener("load", function () {
                     formData.append(inputElement.name, file);
 
                     // Realizar la solicitud HTTP POST a la API de baremación
-                    fetch('http://erasmusbecas.com/api/ApiBaremacion.php', {
+                    fetch('http://erasmusbeca.com/api/ApiBaremacion.php', {
                         method: 'POST',
                         body: formData
                     })
@@ -119,7 +119,7 @@ window.addEventListener("load", function () {
             formData.append('idConvocatoria', idConvocatoria);
             formData.append('idCandidato', idCandidato);
 
-            fetch('http://erasmusbecas.com/api/ApiCandidatosConvocatoria.php', {
+            fetch('http://erasmusbeca.com/api/ApiCandidatosConvocatoria.php', {
                 method: 'POST',
                 body: formData
             })
